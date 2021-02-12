@@ -1,611 +1,349 @@
-## Welcome to GitHub Pages
+[기초1일] 변수란?
+### 변수란 무엇인가
 
-오은석의 홈페이지!
+특정 데이터 타입을 저장할 수 있는 공간을 말한다
 
-You can use the [editor on GitHub](https://github.com/osk2090/osk2090.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+### 데이터 타입이란
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+숫자로는 byte int float double 등이 있으며
 
-### Markdown
+먼저 byte는 말 그대로 1byte의 데이터 타입을 가지고 있다
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+데이터 타입을 논할때 단위
 
-```markdown
-Syntax highlighted code block
+1byte는 8bit와 같다
 
-# Header 1
-## Header 2
-### Header 3
+### 1bit란 무엇인가
 
-- Bulleted
-- List
+컴퓨터는 0과1만 사용하는 이진법을 사용한다
 
-1. Numbered
-2. List
+그렇다면 1bit가 표현할 수 있는 정보의 개수는 2개 뿐인 것이다
 
-**Bold** and _Italic_ and `Code` text
+그럼 2bit는 00,01,10,11 총 4개를 표현 할 수 있다
 
-[Link](url) and ![Image](src)
+3비트는 000,001,010,011,100,101,110,111 -> 2^3  총 8개
+
+4비트는 2^4 총 16개
+
+8비트는 2^8 총 256개
+
+.
+
+.
+
+.
+
+그렇다면 byte가 표현할 수 있는 정보는 총 256개 이며
+
+부호가 없을 경우(unsigned) 0~255개 표현이 가능하다
+
+부호가 존재한다면 -128 ~ 127
+
+정수 **int**는 가장 많이 사용되는 데이터 타입이며 기본타입이다
+
+특히 숫자를 사용할 때 많이 사용되며 int는 4byte 타입에 해당된다
+
+그러므로 32비트에 해당한다 2^32 대략 42억 9천만
+
+float,**double** 또한 많이 사용된다
+
+소수점 데이터의 경우 기본적으로 double을 사용한다
+
+그러나 double은 성능 이슈로 인해 고성능을 요하는 시스템에서는 float를 사용하게 된다
+
+즉 게임을 만든다는 가정하면 double 보다 float가 시스템에 무리가 적다
+
+double로 만든다면 정밀도가 높다 그만큼 표현할 수 있는 범위가 넓다
+
+float는 1byte double은 8byte를 사용한다
+
+만약 강제로 float  변수로 강제 변환하고 싶으면 숫자 뒤에 f를 붙인다
+
+ex)3.3f
+
+변수 만들기
+
+1.데이터 타입을 적는다
+
+2.변수의 이름(공간의 이름)을 적는다
+
+3.필요하다면 값을 할당한다
+
+int num1; 변수 선언(값을 아직 할당받지 않았다)
+
+\=은 같다가 아닌 대입 연산자이다
+
+int num2 = 3; 변수선언+값 할당
+
+\=대입 연산자를 잘 이해해야
+
+\=='같냐?' 연산자와 혼동을 방지할 수 있다
+
+우리가 작성한 값이 잘 들어가 있는지 확인해보겠다
+
+int num1;
+
+System.out.println(num1);
+
+위 코드는 변수를 초기화하지 않았기 때문에 에러가 뜬다
+
+그러므로
+
+int num2 = 5;
+
+System.out.println("num2="+num2)--->결과 num2=5
+
+문자열과 숫자의 덧셈음
+
+문자열 뒤에 숫자를 자동으로 문자열화하여 붙인다
+
+결국 덧셈은 문자열끼리 붙이는 작업이 된다
+
+double dnum1;
+
+double dnum2 = 3.3;
+
+System.out.println("dnum2=" \+ dnum2);  
+
+필자는 num2(3)과 dnum(3.3)을 더하고 싶은데 어떻게 할까?
+
+먼저 우리가 원하지 않는 숫자로 나올때의 방식이다(에러는 아님)
+
+System.out.println("num2+dnum2=" \+ num2 + dnum2);
+
+이렇게 되면 연산을 왼쪽에서 오른쪽으로 진행하기 때문에 결과는
+
+num2+dnum2=33.3
+
+이 나온다
+
+그렇다면 3+3.3은 6.3이 나오도록 하는 방법은 괄호를 붙여준다
+
+System.out.println("num2+dnum2=" \+ (num2 + dnum2));  
+
+결과
+
+num2+dnum2=6.3
+
+앞에 설명과 같이 소수점은 기본적으로 double 타입으로 출력을 하기 때문에
+
+float타입으로 출력을 하려면 숫자 뒤에f를 붙여준다
+
+float fnum = 3.3f;  
+System.out.println("fnum=" \+ fnum);
+
+//%d는 decimal의 약자로 정수를 출력한다  
+//%f는 float의 약자인데 소수점을 출력한다  
+System.out.printf("num2=%d\\n", num2);  
+System.out.printf("dnum2=%f\\n", dnum2);  
+System.out.printf("fnum=%f\\n", fnum);  
+//소수점 3자리만 출력하겠다  
+System.out.printf("fnum=%.3f", fnum);
+
+### 연습문제
+
 ```
+/*
+연습문제1
+사과가 5개 있다
+포도가 7개 있다
+오렌지는 11개 있다
+각각에 대해 변수로 만들고
+각각의 변수가 몇 개 있는지 출력하도록 프로그래밍 하기
+ */
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/osk2090/osk2090.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
-
-
-### \- 학습 목표 달성 확인 목록
-
-**\- \[\] mutable 객체와 immutable 객체의 차이를 예를 들어 설명할 수 있는가?**
-
-String 객체는 immutable(불변) 객체이다.즉 한번 객체에 값을 담으면 변경할 수 없다.
-
-값 자체를 변경할 수 없지만 새로운 String 객체를 만든다.
-
-replace:왼쪽값을 오른쪽값으로 변환하여 새로운 객체를 만든다.하지만 원본 데이터는 변하지 않는다.
-
-concat:원본값에 해당 값을 합쳐서 새로운 객체를 만든다.
-
-```
- String s1 = new String("Hello");
- 
-    String s2 = s1.replace('l', 'x');
-    System.out.printf("%s : %s\n", s1, s2); // 원본은 바뀌지 않는다.
-
-    String s3 = s1.concat(", world!");
-    System.out.printf("%s : %s\n", s1, s3); // 원본은 바뀌지 않는다.
-    
-    //결과
-    Hello : Hexxo
-    Hello : Hello, world!
-```
-
-**반면에 StringBuffer 객체는 mutable 객체이다.**
-
-**해당 인스턴스의 데이터를 직접 변경할 수 있다.**
-
-**원래의 문자열을 변경하고 싶을 때 사용하는 클래스이다.**
-
-```
-StringBuffer buf = new StringBuffer("Hello");
-    System.out.println(buf);
-
-    buf.replace(2, 4, "xxxx");// 원본을 바꾼다.
-    System.out.println(buf);
-    
-    //결과
-    Hello
-    Hexxxxo
-
-```
-
-**\- \[\] 리터럴로 만든 String 객체와 new 로 만든 String 객체의 차이점을 설명할 수 있는가?**
-
-```
-public class Sp {
+public class FirstQuiz1 {
     public static void main(String[] args) {
-        String name = "osk";
-        String name1 = new String("osk");
+        //데이터 타입이 같은 변수들은 ,를 이용하여 변수이름과 숫자를 기재하여 진행한다
+        int apple = 5;
+        int grape = 7;
+        int orange = 11;
 
-        System.out.println(name == name1);
-        System.out.println(name.equals(name1));
+        String a = "사과";
+        String g = "포도";
+        String o = "오렌지";
 
+        System.out.printf("%s는 %d개,%s는 %d개,%s는 %d개", a, apple, g, grape, o, orange);
     }
 }
 
-//결과
-false
-true
-
 ```
 
-String name = ""으로 생성된 문자열은 Heap 메모리에 String pool(상수풀)이라는 공간이 있는데 여기에 문자열을 할당하게 된다.
+### 연산자
 
-여기서 특징은 같은 문자열이 있는지 확인해서 있다면 단 하나만 생성해서 메모리를 절약할 수 있는 장점이 있다.
-
-반면에 String name1 = new String("")으로 생성된 문자열은 우리가 일반적으로 아는 Heap 메모리에는 해당 문자열을 할당
-
-Stack 메모리에는 Heap 메모리에 저장된 곳의 주소값을 저장한다.그래서 상수풀과는 달리 같은 문자열을 선언해도 따로따로 메모리를 할당하기 때문에 메모리 낭비가 있다.
-
-상수풀의 경우
+데이터 타입이 같은 변수들은 ,를 이용해서 변수이름과 숫자를 기재하여 진행한다
 
 ```
-        String name1 = "osk";
-        String name2 = "osk";
-
-        System.out.println(name1.hashCode());
-        System.out.println(name2.hashCode());
-        System.out.println(name1 == name2);
-        
-        //결과
-        110343
-        110343
-        true
-        hashcode()메서드로 확인하면 주소값이 같은걸 볼 수 있다.
-        그렇기에 ==연산자로 확인해보면 true가 나오는것을 확인할 수 있다.
+int apple.grape,orange;
 ```
 
-객체의 경우
+변수는 한번 선언하면 두번 선언할 필요가 없다
+
+만약 두번 선언하면 중복 오류가 발생한다
+
+**덧셈**
 
 ```
-        String name1 = "osk";
-        String name3 = new String("osk");
-        String name4 = new String("osk");
-
-        System.out.println(name1 == name3);
-        System.out.println(name3 == name4);
-
-        System.out.println(name1.equals(name3));
-        System.out.println(name3.equals(name4));
-        
-        //결과
-        false//주소값이 다르기때문에 false
-        false//각각 다른 객체를 생성했기에 주소값이 다르다 그래서 false
-        true//문자열 데이터를 직접 확인하기에 true
-        true//동일
+ int res = apple + grape;
+ System.out.println("apple+grape=" + res);
 ```
 
-**\- \[\] 래퍼(wrapper) 클래스의 용도와 사용법을 알고 있는가?**
-
-<table style="border-collapse: collapse; width: 82.326%; height: 290px;" border="1" data-ke-style="style3"><tbody><tr style="height: 19px;"><td style="text-align: center; height: 19px;">기본 타입</td><td style="text-align: center; height: 19px;">래퍼 클래스</td></tr><tr style="height: 19px;"><td style="text-align: center; height: 19px;">byte</td><td style="text-align: center; height: 19px;">Byte</td></tr><tr style="height: 19px;"><td style="text-align: center; height: 19px;">short</td><td style="text-align: center; height: 19px;">Short</td></tr><tr style="height: 19px;"><td style="text-align: center; height: 19px;">int</td><td style="text-align: center; height: 19px;"><b>Integer</b></td></tr><tr style="height: 19px;"><td style="text-align: center; height: 19px;">long</td><td style="text-align: center; height: 19px;">Long</td></tr><tr style="height: 19px;"><td style="text-align: center; height: 19px;">float</td><td style="text-align: center; height: 19px;">Float</td></tr><tr style="height: 19px;"><td style="text-align: center; height: 19px;">double</td><td style="text-align: center; height: 19px;">Double</td></tr><tr style="height: 19px;"><td style="text-align: center; height: 19px;">char</td><td style="text-align: center; height: 19px;"><b>Character</b></td></tr><tr style="height: 19px;"><td style="text-align: center; height: 19px;">boolean</td><td style="text-align: center; height: 19px;">Boolean</td></tr></tbody></table>
-
-primitive data type를 객체처럼 다룰 수 있도록 자바에서 제공한다.
-
-포장하는 객체라고 해서 wrapper 클래스라고 부른다.
-
-primitive data type의 값을 객체로 주고 받을 때 사용한다.
-
-primitive data type의 값을 객체에 담아 전달하고 싶다면
-
-언제든 wrapper 클래스의 인스턴스를 만들면 된다.
-
-가장 큰 목적은 
-
-primitive data type을 포함해서 모든 값을 쉽게 주고 받기 위해서이다.
-
-[##_Image|kage@cQlrSh/btqVFBMu09T/PFQ4Xh26CcRGjJVuazkRZ0/img.png|alignCenter|data-origin-width="0" data-origin-height="0" data-ke-mobilestyle="widthContent"|||_##]
-
-그림과 같이 기본 타입의 데이터를 래퍼 클래스의 인스턴스로 변환하는 과정을 박싱(boxing)이라고 한다.
-
-반대로 래퍼 클래스의 인스턴스에 저장된 값을 다시 기본 타입의 데이터로 꺼내는 과정을 언박싱(unboxing)이라고 한다.
-
-이것을 수동으로하면 개발자가 너무 힘들다 그래서 자동으로 변환을 해주는 기능이 있다.
+**뺄셈**
 
 ```
-primitive data type 값을 Wrapper 클래스의 인스턴스에 바로 할당할 수 있다.
-    //
-    Integer obj = 100; // ==> Integer.valueOf(100)
-
-    // obj는 레퍼런스인데 어떻게 가능한가?
-    // => 내부적으로 Integer.valueOf(100) 호출 코드로 바뀐다.
-    // => 즉 int 값이 obj에 바로 저장되는 것이 아니라,
-    //    내부적으로 Integer 객체가 생성되어 그 주소가 저장된다.
-    // => 이렇게 int 값을 자동으로 Integer 객체로 만드는 것을
-    //    "오토박싱(auto-boxing)"이라 한다.
+res = orange - grape;
+System.out.println("apple+grape=" + res);
 ```
 
-```
-Wrapper 객체의 값을 primitive data type 변수에 직접 할당할 수 있다.
-    //
-    Integer obj = Integer.valueOf(300);
-    int i = obj; // ==> obj.intValue()
-
-    // obj에 저장된 것은 int 값이 아니라 Integer 객체의 주소인데 어떻게 가능한가?
-    // => 내부적으로 obj.intValue() 호출 코드로로 바뀐다.
-    // => 즉 obj에 들어있는 인스턴스 주소가 i에 저장되는 것이 아니라,
-    //    obj 인스턴스에 들어 있는 값을 꺼내 i에 저장하는 것이다.
-    // => 이렇게 Wrapper 객체 안에 들어 있는 값을 자동으로 꺼낸다고 해서
-    //    "오토언박싱"이라 부른다.
-```
-
-**\- \[\] java.util.Date, java.sql.Date, java.util.Calendar 클래스를 사용할 수 있는가?**
+**곱셈**
 
 ```
-    // Date(long) : 1970-01-01 00:00:00 부터 지금까지 경과된 밀리초
-    Date d2 = new Date(1000);
-    System.out.println(d2);
-    
-    // java.sql.Date
-    java.sql.Date d5 = new java.sql.Date(System.currentTimeMillis());//현재시간 출력
-    System.out.println(d5);
+res = apple * grape;
+System.out.println("apple*grape=" + res);
 ```
 
-**\- \[\] 기능을 확장하기 위해 사용하는 기법의 유형을 설명할 수 있는가?**
-
-1) 기존 클래스에 코드를 추가하는 방법
-
- \- 기존 코드를 변경하게 되면 원래 되던 기능도 오류가 발생할 수 있는 위험이 있다.
-
- \- 그래서 원래 코드를 손대는 것은 매우 위험한 일이다.
-
- \- 기존에 잘 되던 기능까지 동작이 안되는 문제가 발생할 수 있기 때문이다.
-
-2) 기존 코드를 복사하여 새 클래스를 만드는 방법
-
- \- 장점
-
- \- 기존 코드를 손대지 않기 때문에 문제가 발생할 가능성은 줄인다.
-
- \- 단점
-
- \- 기존 코드의 크기가 큰 경우에는 복사 붙여넣기가 어렵다.
-
- \- 기존 클래스의 소스가 없는 경우에는 이 방법이 불가능하다.
-
- 엥? 다른 개발자가 배포한 라이브러리만 있는 경우를 말한다.
-
- 소스가 없는 다른 개발자가 만든 클래스에 기능을 덧 붙일 때는 이 방법이 불가능하다.
-
- \- 기존 코드에 버그가 있을 때 복사 붙여넣기 해서 만든 클래스도 영향을 받는다.
-
- \- 기존 코드를 변경했을 때 복사 붙여넣기 한 모든 클래스를 찾아 변경해야 한다.
-
-3) 기존 코드를 상속 받아 기능을 추가하는 방법
-
- \- 장점
-
- \- 기존 클래스의 소스 코드가 필요 없다.
-
- \- 간단한 선언으로 상속 받겠다고 표시한 후 새 기능만 추가하면 된다.
-
- \- 단점
-
- \- 일부 기능만 상속 받을 수 없다.
-
- \- 쓰든 안쓰든 모든 기능을 상속 받는다.
-
-**\- \[\] 상속을 이용하여 기능을 확장할 수 있는가?**
+**나눗셈**
 
 ```
-public class Score {
-
-  public String name;
-  public int kor;
-  public int eng;
-  public int math;
-  public int sum;
-  public float aver;
-
-  public void compute() {
-    this.sum = this.kor + this.eng + this.math;
-    this.aver = this.sum / 3f;
-  }
-}
+res = orange / apple;
+System.out.println("orange/apple=" + res);
 ```
 
-```
-public class Score2 extends Score {
-
-  // 새 필드를 추가한다.
-  public int music;
-  public int art;
-
-
-  // 기존 코드를 변경한다.
-  @Override
-  public void compute() {
-    this.sum = this.kor + this.eng + this.math + this.music + this.art;
-    this.aver = this.sum / 3f;
-  }
-}
-```
+**나머지**
 
 ```
-public class Exam03 {
-  public static void main(String[] args) {
-
-    Score2 s = new Score2();
-    s.name = "홍길동";
-    s.kor = 100;
-    s.eng = 100;
-    s.math = 100;
-    s.music = 100;
-    s.art = 100;
-    s.compute();
-
-    System.out.printf("%s: %d(%.1f)\n", s.name, s.sum, s.aver);
-  }
-}
+res = orange % grape;
+System.out.println("orange mod grape=" + res);
 ```
 
-**\- \[\] 수퍼 클래스와 서브 클래스의 용어를 이해하는가?**
+**강제타입변환(Type Casting)**
 
 ```
-public class A {//A클래스의 슈퍼클래스는 Object
-  void m1() {
-    System.out.println("A.m1()");
-  }
-}
+res2 = (float) orange / apple;//피연산자가 int로 선언이 되었는데 float로 강제 변환하면 결과값은 소수점으로 나온다
+System.out.println(res2);
 ```
 
-```
-public class B extends A {//B클래스의 슈퍼클래스는 A클래스
-  public void m2() {
-    System.out.println("B.m2()");
-  }
-}
-```
+### 비트연산
 
-```
-public class C extends B {//C클래스의 슈퍼클래스는 B클래스
-  public void m3() {
-    System.out.println("C.m3()");
-  }
-}
+10진수를 2진수로 바꾸는 방법
 
-```
+2진수로 변경  
+4   3   2   1   0  
+1   0   0   0   0  
+2^4 x 1 + 0 ===> 16
 
-```
-public class D extends C {//D클래스의 슈퍼클래스는 C클래스
-  public void m4() {
-    System.out.println("D.m4()");
-  }
-}
+10진수 2진수로 바꾸는 방법  
+1\. 변환할 숫자를 지정한다(현재 케이스 5)  
+2\. 지정한 숫자보다 작은 2의 최대 승수를 찾는다.  
+3\. 지정한 숫자에서 찾은 숫자를 뺀다.  
+4\. 뺏으므로 현재 케이스에서 1이 남는다.  
+5\. 현재 케이스를 4를 뺏으므로 2번 자리에 1을 설정한다.  
+6\. 나머지 1을 표현할 수 있는 숫자는 2^0  
+     그러므로 0번 자리에 1을 설정한다.  
+7\. 최종적으로 나머지가 0이 될때까지 작업을 반복한다.
 
-```
+숫자 6을 2진수로 바꾸기
 
-```
-    D obj = new D();
-    obj.m4(); // obj 레퍼런스의 클래스에서 m4()를 찾아 호출한다.
-    obj.m3(); // obj 레퍼런스의 클래스(D)에서 m3()를 찾아보고 없다면 수퍼 클래스에서 찾는다.
-    obj.m2(); // 만약 D의 수퍼 클래스에서도 못찾는다면 그 위의 클래스에서 찾아본다.
-    obj.m1(); // 그 위에 클래스에서도 없다면 더 위에 클래스에서 찾아본다.
-    //obj.m0(); // 더 위에 있는 클래스에서도 찾을 수 없다면 컴파일 오류이다!
-```
+6-4 = 2
 
-**\- \[\] 상속 관계에 있는 클래스의 인스턴스 생성 과정을 이해하는가?**
+2-2 = 0
 
-```
-public class A {
-  int v1;
+2^2 2^1 2^0
 
-  static { 
-    System.out.println("A클래스의 static{} 실행!");
-  }
-}
-```
+1      1      0
 
-```
-public class B extends A {
-  int v2;
+맞는지 확인할려면 2^2+2^1+0 ===>6 
 
-  static {
-    System.out.println("B클래스의 static{} 실행!");
-  }
-}
-```
+숫자 7를 2진수로 바꾸기
 
-```
-B obj = new B();
+7-4 = 3
 
-    obj.v2 = 200; // B 클래스 설계도에 따라 만든 변수
-    obj.v1 = 100; // A 클래스 설계도에 따라 만든 변수
+3-2 = 1
 
-    System.out.printf("v2=%d, v1=%d\n", obj.v2, obj.v1);
-    System.out.println("---------------------------------");
+1-1 = 0
 
-    // 클래스는 오직 한 번만 로딩된다.
-    // - 그래서 static 블록도 위에서 한 번 실행되면 다시 실행하지 않는다.
-    //
-    B obj2 = new B();
-    obj2.v2 = 2000;
-    obj2.v1 = 1000;
-    System.out.printf("v2=%d, v1=%d\n", obj2.v2, obj2.v1);
+2^2 2^1 2^0
 
-//결과
-A클래스의 static{} 실행!
-B클래스의 static{} 실행!
-v2=200, v1=100
----------------------------------
-v2=2000, v1=1000
+1      1      1
 
+맞는지 확인하려면 2^2+2^1+2^0===>7
 
-인스턴스 생성 절차 정리!
-    // 1) 상속 받은 수퍼 클래스를 먼저 메모리에 로딩한다.
-    //    이미 로딩되어 있다면 다시 로딩하지는 않는다.
-    // 2) 그런 후 해당 클래스를 메모리에 로딩한다.
-    //    마찬가지로 이미 로딩되어 있다면 다시 로딩하지는 않는다.
-    // 3) 수퍼 클래스에 선언된 대로 인스턴스 변수를 Heap에 만든다.
-    // 4) 해당 클래스에 선언된 대로 인스턴스 변수를 Heap에 만든다.
-    // 5) 수퍼 클래스부터 생성자를 실행하며 해당 클래스까지 내려온다.
-```
+숫자 11을 2진수로 바꾸기
 
-**\- \[\] 상속 관계에 있는 클래스의 생성자 호출 과정을 이해하는가?**
+11-8 = 3
 
-```
-public class A /*extends Object*/ {
-  int v1;
+3-2 = 1
 
-  A() {
-    // 수퍼 클래스의 어떤 생성자를 호출할지 지정하지 않으면 컴파일러는
-    // 다음과 같이 수퍼 클래스의 기본 생성자를 호출하라는 명령을 붙인다.
-    //    super(); // 즉 개발자가 붙이지 않으면 자동으로 붙인다.
+1-1 = 0
 
-    System.out.println("A() 생성자!");
-    this.v1 = 100;
-    //super();//뒤에 붙이면 컴파일에러가 뜬다
-  }
-}
-```
+2^3 2^2 2^1 2^0
 
-```
-public class B extends A {
-  int v2;
+1      0     1    1
 
-  B() {
-    System.out.println("B() 생성자!");
-    this.v2 = 200;
-  }
-}
-```
+맞는지 확인하려면 2^3+2^1+1===>11
 
-```
-public class C extends B {
-  int v3;
+숫자 13을 2진수로 바꾸기
 
-  C() {
-    System.out.println("C() 생성자!");
-    this.v3 = 300;
-  }
-}
+13-8=5
 
-```
+5-4=1
 
-```
-C obj = new C();
-    System.out.printf("v1=%d, v2=%d, v3=%d\n", obj.v1, obj.v2, obj.v3);
-    
-    //결과
-    A() 생성자!
-    B() 생성자!
-    C() 생성자!
-    v1=100, v2=200, v3=300
+1-1=0
 
-```
+2^3 2^2 2^1 2^0
 
-**\- \[\] 수퍼 클래스의 생성자를 호출하는 \`super()\` 의 사용법을 아는가?**
+1      1       0     1
 
-```
-public class A /*extends Object*/ {
-  int v1;
-  
-  A(int value) {
-    this.v1 = value;
-    System.out.println("A(int) 생성자!");
-  }
-}
-```
+맞는지 확인하려면 2^3+2^2+1===>13
 
-```
-public class B extends A {
-  int v2;
+숫자 20을 2진수로 바꾸기
 
-  B() {
-  	//부모클래스의 기본생성자를 호출하라는 명령이 있으면
-    // - 개발자가 직접 수퍼 클래스에 있는 생성자를 호출해야된다
-    super(100);
-    System.out.println("B() 생성자!");
-  }
-}
-```
+20-16=4
 
-```
-public class Exam01 {
-  public static void main(String[] args) {
-    B obj = new B();
-    System.out.printf("v1=%d, v2=%d\n", obj.v1, obj.v2);
-  }
-}
+4-4=0
 
-//결과
-A(int) 생성자!
-B() 생성자!
-v1=100, v2=0
-```
+2^4 2^3 2^2 2^1 2^0
 
-**\- \[\] 자바에서 다중 상속을 지원하지 않는 이유를 아는가?**
+1      0    1    0     0
 
-만약 두 클래스를 상속받을때,
+맞는지 확인하려면 2^4+2^2===>20
 
-필드나 메서드의 이름이 같다면 개발자에게 혼동이 올 수 있으므로 자바에서는 다중 상속을 지원하지 않는다.  
+숫자 27을 2진수로 바꾸기
 
-**\- \[\] specialization과 generalization 상속 기법을 설명할 수 있는가?**
+27-16=11
 
-specialization:예를 들면 자동차는 승용차와 트럭으로 나뉜다.
+11-8=3
 
-```
-public class Car {
-    void engine() {
-        System.out.println("부릉부릉");
-    }
+3-2=1
 
-    void tire() {
-        System.out.println("금호타이어");
-    }
+1-1=0
 
-    void caution() {
-        System.out.println("빵빵");
-    }
-}
-```
+2^4 2^3 2^2 2^1 2^0
 
-Car 클래스를 상속받으며 각 차종에 다르게 기능이 있는 것을 말한다.이것이 specialization!
+1      1      0    1    1
 
-```
-public class Benz extends Car {
-    void trunk() {
-        System.out.println("트렁크를 열어 짐을 싣는다.");
-    }
-}
-```
+맞는지 확인하려면 2^4+2^3+2^1+1===>27
 
-```
-public class Truck extends Car {
-    void function() {
-        System.out.println("덤프기능");
-    }
-}
-```
+AND연산자
 
-generalization:반대로 공통 필드나 메서드를 한대 묶어서 관리하는 것을 말한다.
+자릿수가 서로 1로 일치할때만 1이 되며
 
-그렇게 되면 Car클래스가 generalization 한것이다.
+그외의 경우엔 모두 0이 된다
 
-**\- \[\] 추상 클래스의 용도와 사용법을 아는가?**
+(여기서 1이란 참,0이란 거짓으로 봐도 무방하다)
 
-**주로 generalization 과정에서 정의 슈퍼클래스에 대해 추상 클래스로 설정한다.**
+         0  0  1  0  1
 
-**그래서 나중에 서브 클래스에서 필드나 메서드를 선언한다.**
+AND 0  1  0  1  0
 
-주의할 점은 추상클래스는 인스턴스 생성이 불가하다.(new생성자를 사용한 인스턴스화)
+\-----------------------
 
-```
-abstract class A{
-...
-}
-```
+  0  0  0  0  0
 
-**\- \[\] 추상 메서드의 용도와 사용법을 아는가?**
+         00101
 
-```
-public abstract class ab1 {
-    abstract void m1();
-}
-```
+AND01  11  1
 
-```
-public abstract class ab2 extends ab1 {
-    abstract void m2();
-}
-```
+\-----------------------
 
-```
-public class aabb {
-    public static void main(String[] args) {
-        ab2 a = new ab2() {
-            @Override//오버라이딩을 이용하여 추상메서드의 body를 완성한다.
-            void m1() {
-                System.out.println("1");
-            }
-
-            @Override//오버라이딩을 이용하여 추상메서드의 body를 완성한다.
-            void m2() {
-                System.out.println("2");
-            }
-        };
-        a.m1();
-        a.m2();
-    }
-}
-
-//결과
-1
-2
-```
-
-서브 클래스에서 재정의 해야만 하고 슈퍼클래스에서 구체적으로 구현하지 않는것이 좋다.
+00  10 1
