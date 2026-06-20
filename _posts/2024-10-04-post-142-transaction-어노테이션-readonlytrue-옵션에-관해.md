@@ -4,8 +4,8 @@ title: "@Transaction 어노테이션 readOnly=true 옵션에 관해"
 date: 2024-10-04 16:32:18 +0900
 categories: [Database]
 slug: post-142-transaction-어노테이션-readonlytrue-옵션에-관해
-render_with_liquid: false
 ---
+{% raw %}
 
 나도 그냥 구글링해서 찾아본 바로는 단순히 데이터를 가져오는 메서드에 @Transaction(readOnly=true) 옵션을 주면
 
@@ -31,3 +31,4 @@ ORM 레이어: 변경 감지(Dirty Checking) 비활성화
 JDBC 레이어: 결과 캐싱, 네트워크 최적화
 
 데이터베이스 레이어: 가벼운 잠금 사용
+{% endraw %}

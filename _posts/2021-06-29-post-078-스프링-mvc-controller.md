@@ -4,9 +4,9 @@ title: "스프링 MVC Controller"
 date: 2021-06-29 18:50:16 +0900
 categories: [Spring]
 slug: post-078-스프링-mvc-controller
-render_with_liquid: false
 image: /images/78/img.png
 ---
+{% raw %}
 
 스프링 MVC를 이용하는 경우 작성되는 컨트롤러에는 특징이 있다.
 
@@ -60,3 +60,4 @@ Mapped "{[/sample/*]}" onto public void com.osk2090.controller.SampleController.
 ```
 
 현재 프로젝트의 경우'/'와 'sample/\*'는 호출이 가능한 경로라는 것을 확인 할 수 있다.
+{% endraw %}

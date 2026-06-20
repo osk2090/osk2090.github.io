@@ -4,9 +4,9 @@ title: "[Design Pattern]Observer Pattern"
 date: 2021-08-09 11:52:30 +0900
 categories: [Design Pattern]
 slug: post-106-design-patternobserver-pattern
-render_with_liquid: false
 image: /images/106/img.jpg
 ---
+{% raw %}
 
 ```java
 public class User1 extends Observer{
@@ -125,3 +125,4 @@ public class Main {
 유저2에서 메시지를 받음 : 공지사항입니다~!
 유저2에서 메시지를 받음 : 안녕하세요~
 ```
+{% endraw %}

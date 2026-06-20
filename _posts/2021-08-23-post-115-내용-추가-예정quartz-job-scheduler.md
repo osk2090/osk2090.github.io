@@ -4,8 +4,8 @@ title: "[내용 추가 예정]Quartz Job Scheduler"
 date: 2021-08-23 16:32:11 +0900
 categories: [Etc]
 slug: post-115-내용-추가-예정quartz-job-scheduler
-render_with_liquid: false
 ---
+{% raw %}
 
 참조:<https://advenoh.tistory.com/51>
 
@@ -46,3 +46,4 @@ Quartz API에서 단 하나의 메서드를 가진 execute(JobExecutionContext c
 Quartz를 사용하는 개발자는 수행해야 하는 실제 작업을 이 메서드에서 구현하면 된다.
 
 Job의 Trigger가 발생하면 스케줄러는 JobExecutionContext 객체를 넘겨주고 execute 메서드를 호출한다.
+{% endraw %}

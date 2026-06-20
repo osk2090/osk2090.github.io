@@ -4,8 +4,8 @@ title: "Spring-Batch:ItemReader 관련 모음"
 date: 2021-08-27 10:35:52 +0900
 categories: [Spring Batch]
 slug: post-120-spring-batchitemreader-관련-모음
-render_with_liquid: false
 ---
+{% raw %}
 
 ### ItemReader Interface
 
@@ -58,3 +58,4 @@ DB Connection 반도가 높아 비교적 성능이 낮은 반면 짧은 Connecti
 은 메모리를 사용한다.
 
 \*Thread safe: 멀티 스레드 프로그래밍에서 일반적으로 어떤 함수나 변수, 혹은 객체가 여러 스레드로부터 동시에 접근이 이루어져도 프로그램의 실행에 문제가 없음을 뜻한다.
+{% endraw %}

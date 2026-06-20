@@ -4,9 +4,9 @@ title: "스프링 MVC Controller-1"
 date: 2021-06-30 20:19:10 +0900
 categories: [Spring]
 slug: post-079-스프링-mvc-controller-1
-render_with_liquid: false
 image: /images/79/img.png
 ---
+{% raw %}
 
 ### @RequestMapping의 변화
 
@@ -315,3 +315,4 @@ http://localhost:8080/controller_war_exploded/sample/ex03?title=date&dueDate=202
 ```java
 INFO : com.osk2090.controller.SampleController - todo: TodoDTO(title=date, dueDate=Wed Jan 01 00:00:00 KST 2020)
 ```
+{% endraw %}

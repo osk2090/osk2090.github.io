@@ -4,9 +4,9 @@ title: "[Design Pattern]Decorator Pattern"
 date: 2021-08-09 10:23:45 +0900
 categories: [Design Pattern]
 slug: post-105-design-patterndecorator-pattern
-render_with_liquid: false
 image: /images/105/img.png
 ---
+{% raw %}
 
 참조:<https://coding-factory.tistory.com/713?category=974095>
 
@@ -137,3 +137,4 @@ public class Main {
 아메리카노 : 에스프레소 + 물
 라떼 : 에스프레소 + 물 + 우유
 ```
+{% endraw %}

@@ -4,8 +4,8 @@ title: "Spring-Batch:Skip/Retry"
 date: 2021-08-30 12:57:59 +0900
 categories: [Spring Batch]
 slug: post-122-spring-batchskip-retry
-render_with_liquid: false
 ---
+{% raw %}
 
 참조:<https://oingdaddy.tistory.com/183>
 
@@ -108,3 +108,4 @@ public class PersonValidationRetryProcessor implements ItemProcessor<Person, Per
 - retry()-해당 exception이 발생했을 때 retry 하겠다는 것이다.
 - noRetry()-해당 exception이 발생했을 때 retry하지 않겠다는 것이다.
 - retryPolicy()-사용자의 정의로 retry에 대한 policy를 만들어서 적용하고 싶을때 사용한다.
+{% endraw %}

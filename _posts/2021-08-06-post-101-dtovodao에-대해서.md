@@ -4,8 +4,8 @@ title: "DTO,VO.DAO에 대해서"
 date: 2021-08-06 14:48:31 +0900
 categories: [Etc]
 slug: post-101-dtovodao에-대해서
-render_with_liquid: false
 ---
+{% raw %}
 
 ### DAO(Data Access Object)
 
@@ -101,3 +101,4 @@ VO는 값 오브젝트로써 값을 위해 쓰인다.자바는 값 타입을 표
 불변이라는 것은 read only 특징을 가진다.
 
 DTO와 VO의 공통적음 넣어진 데이터를 getter를 통해 사용하므로 주 목적은 같으나 DAO는 가변적인 성격을 가진 클래스이며(setter 활용) 그에 비해 VO는 불변의 성격을 가졌기에 차이점이 있다.
+{% endraw %}

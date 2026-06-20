@@ -4,8 +4,8 @@ title: "Oracle DB 설치 관련"
 date: 2021-06-24 18:59:32 +0900
 categories: [Database]
 slug: post-074-oracle-db-설치-관련
-render_with_liquid: false
 ---
+{% raw %}
 
 Oracle DB 설치
 
@@ -26,3 +26,4 @@ TEMPORARY TABLESPACE TEMP; ---> 임시 테이블 스페이스 선언
 필자는 원래 MySQL을 사용하여 처음보는 임시테이블인데 오라클에서는 따로 선언해주는 부분이 있다.
 
 (트랜잭션을 이유로 선언하는 것 같다.)
+{% endraw %}

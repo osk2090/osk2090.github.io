@@ -4,9 +4,9 @@ title: "[Design Pattern]Facade Pattern"
 date: 2021-08-10 09:07:05 +0900
 categories: [Design Pattern]
 slug: post-107-design-patternfacade-pattern
-render_with_liquid: false
 image: /images/107/img.png
 ---
+{% raw %}
 
 ### 파사드패턴이란?
 
@@ -123,3 +123,4 @@ public class Viewer {
 사용자 입장에서는 이제 서브 클래스에 대해서 알 필요가 없다
 
 단지 Facade 객체의 view\_Movie() 메서드를 호출하면서 서브 클래스들의 복잡한 기능을 수행할 수 있기 때문이다.
+{% endraw %}

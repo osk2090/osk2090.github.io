@@ -4,8 +4,8 @@ title: "PostgreSQL Shared Buffer 영역(작성중)"
 date: 2026-04-19 13:43:08 +0900
 categories: [Database]
 slug: post-154-postgresql-shared-buffer-영역작성중
-render_with_liquid: false
 ---
+{% raw %}
 
 일단 shared buffer 영역이 존재하는 이유는 매번 쿼리를 날릴때마다 DB는 디스크에 접근해서 데이터를 가져오기엔 비용과 부하가 발생한다.
 
@@ -166,3 +166,4 @@ ORDER BY
 | **16512**  **users** | 릴레이션 OID  테이블/인덱스명 | **"이 데이터는 users라는 테이블의 데이터입니다."**  사무실 안의 16512번 서랍장(users 테이블)에서 꺼내온 물건입니다. |
 | **0** | 포크 번호 (ForkNum) | **"이것은 테이블의 '진짜 본문 데이터(Main)'입니다."**  PostgreSQL에서 0번은 실제 데이터 본문을 의미합니다. (참고로 1번은 빈 공간 정보, 2번은 데이터 표시 여부 등 관리용 정보입니다.) |
 | **0** | 블록 번호 (BlockNum) | **"이것은 users 테이블 파일의 가장 '첫 번째 조각(블록)'입니다."**  데이터베이스는 데이터를 8KB 크기의 블록으로 쪼개서 저장하는데, 그중 0번째(맨 처음) 페이지라는 뜻입니다. |
+{% endraw %}

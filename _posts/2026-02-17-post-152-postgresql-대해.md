@@ -4,8 +4,8 @@ title: "PostgreSQL 대해"
 date: 2026-02-17 16:56:11 +0900
 categories: [Database]
 slug: post-152-postgresql-대해
-render_with_liquid: false
 ---
+{% raw %}
 
 1. PostgreSQL은 시스템 메모리가 1GB 이상일 경우 전체 메모리의 약 25%를 shared\_buffers로 설정하는 것이 일반적이다.
 2. PostgreSQL은 DB 내부 버퍼(shared\_buffers)와 OS의 페이지 캐시를 함께 활용하는 구조이기 때문에, shared buffer를 과도하게 크게 설정하지 않는다.
@@ -33,3 +33,4 @@ SELECT txid_status(751);
 backend 프로세스가 관리하는 영역이며 쿼리를 실행후 결과를 전송
 
 세션/트랜잭션별로 단위 메모리를 설정 가능
+{% endraw %}

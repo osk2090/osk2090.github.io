@@ -4,9 +4,9 @@ title: "스프링 MVC 프로젝트 - MyBatis와 스프링에서 페이징 처리
 date: 2021-07-19 09:16:35 +0900
 categories: [Spring]
 slug: post-091-스프링-mvc-프로젝트---mybatis와-스프링에서-페이징-처리
-render_with_liquid: false
 image: /images/91/img.png
 ---
+{% raw %}
 
 MyBatis는 SQL을 그대로 사용할 수 있기 때문에 인라인뷰를 이용하는 SQL을 작성하고
 
@@ -333,3 +333,4 @@ public void testListPaging()throws Exception {
   .andReturn().getModelAndView().getModelMap()
 );
 ```
+{% endraw %}

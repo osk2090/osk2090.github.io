@@ -4,9 +4,9 @@ title: "스프링 MVC Controller-3"
 date: 2021-07-01 21:36:35 +0900
 categories: [Spring]
 slug: post-081-스프링-mvc-controller-3
-render_with_liquid: false
 image: /images/81/img.png
 ---
+{% raw %}
 
 ### Controller의 리턴 타입
 
@@ -308,3 +308,4 @@ INFO : com.osk2090.controller.SampleController - size24777
 위의 콘솔창 로그를 보면 업로드 정보가 올바르게 처리되는 것을 보여주고 있다.
 
 최종 업로드를 하려면 byte[]를 처리해야 하는데 이 예제는 아직 처리하지 않고 있다.
+{% endraw %}

@@ -4,8 +4,8 @@ title: "[기초3일]switch문/while문"
 date: 2020-12-17 01:03:37 +0900
 categories: [Etc]
 slug: post-010-기초3일switch문-while문
-render_with_liquid: false
 ---
+{% raw %}
 
 ### **후위 연산자**
 
@@ -274,3 +274,4 @@ int n = 1;
         }
         System.out.println(a);
 ```
+{% endraw %}

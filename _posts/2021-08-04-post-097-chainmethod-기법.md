@@ -4,8 +4,8 @@ title: "ChainMethod 기법"
 date: 2021-08-04 12:27:13 +0900
 categories: [Etc]
 slug: post-097-chainmethod-기법
-render_with_liquid: false
 ---
+{% raw %}
 
 ```java
 package com.demo.domain;
@@ -64,3 +64,4 @@ public class DemoApplication {
 ```
 
 이렇게 쓰면 한줄로 체인처럼 메서드를 호출할 수 있기에 가독성을 높인다.
+{% endraw %}
