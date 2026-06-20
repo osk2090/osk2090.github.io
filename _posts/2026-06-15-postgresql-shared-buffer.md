@@ -1,11 +1,8 @@
 ---
-title: ''
----
-
----
+layout: post
 title: "PostgreSQL Shared Buffer 영역(작성중)"
+date: 2026-06-15 13:43:08 +0900
 slug: post-154-postgresql-shared-buffer-영역작성중
-date: 2026-04-19T13:43:08
 ---
 
 일단 shared buffer 영역이 존재하는 이유는 매번 쿼리를 날릴때마다 DB는 디스크에 접근해서 데이터를 가져오기엔 비용과 부하가 발생한다.
