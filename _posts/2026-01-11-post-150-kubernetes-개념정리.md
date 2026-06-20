@@ -4,6 +4,7 @@ title: "Kubernetes 개념정리"
 date: 2026-01-11 12:12:57 +0900
 categories: [Kubernetes]
 slug: post-150-kubernetes-개념정리
+render_with_liquid: false
 ---
 
 # [Kubernetes] Kind로 실습하며 정리한 핵심 개념 요약 (노드, 컨트롤러, 서비스)

@@ -4,6 +4,7 @@ title: "Kafka-AWS 연동"
 date: 2021-10-17 02:53:06 +0900
 categories: [Kafka]
 slug: post-126-kafka-aws-연동
+render_with_liquid: false
 ---
 
 ```bash

@@ -4,6 +4,7 @@ title: "[Spring Framework]Log4j의 역할"
 date: 2021-06-24 08:40:08 +0900
 categories: [Spring]
 slug: post-071-spring-frameworklog4j의-역할
+render_with_liquid: false
 ---
 
 log4j는 프로그램을 작성하는 도중에 로그를 남기는 자바 기반의 우틸리티이다

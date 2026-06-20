@@ -4,6 +4,7 @@ title: "PostgreSQL 대해"
 date: 2026-02-17 16:56:11 +0900
 categories: [Database]
 slug: post-152-postgresql-대해
+render_with_liquid: false
 ---
 
 1. PostgreSQL은 시스템 메모리가 1GB 이상일 경우 전체 메모리의 약 25%를 shared\_buffers로 설정하는 것이 일반적이다.

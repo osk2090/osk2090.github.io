@@ -4,6 +4,7 @@ title: "[Q] String text = ''; 와 String text = new String(); 의 차이"
 date: 2020-12-24 13:55:09 +0900
 categories: [Etc]
 slug: post-015-q-string-text-와-string-text-new-string-의-차이
+render_with_liquid: false
 ---
 
 먼저 “ ”는 문자열을 나타내며 new연산자로 인해 heap 메모리에 인스턴스된 text는 엄연히 다르다.

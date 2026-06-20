@@ -4,6 +4,7 @@ title: "[Design Pattern]Proxy Pattern"
 date: 2021-08-09 09:47:22 +0900
 categories: [Design Pattern]
 slug: post-104-design-patternproxy-pattern
+render_with_liquid: false
 ---
 
 참조:<https://coding-factory.tistory.com/711>

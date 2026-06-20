@@ -4,6 +4,7 @@ title: "[Design Pattern]Observer Pattern"
 date: 2021-08-09 11:52:30 +0900
 categories: [Design Pattern]
 slug: post-106-design-patternobserver-pattern
+render_with_liquid: false
 image: /images/106/img.jpg
 ---
 

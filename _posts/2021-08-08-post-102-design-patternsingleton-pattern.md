@@ -4,6 +4,7 @@ title: "[Design Pattern]Singleton Pattern"
 date: 2021-08-08 17:43:33 +0900
 categories: [Design Pattern]
 slug: post-102-design-patternsingleton-pattern
+render_with_liquid: false
 ---
 
 참조:<https://elfinlas.github.io/2019/09/23/java-singleton/>

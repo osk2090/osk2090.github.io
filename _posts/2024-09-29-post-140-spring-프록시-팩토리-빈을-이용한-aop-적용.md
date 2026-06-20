@@ -4,6 +4,7 @@ title: "Spring 프록시 팩토리 빈을 이용한 AOP 적용"
 date: 2024-09-29 16:06:19 +0900
 categories: [Spring]
 slug: post-140-spring-프록시-팩토리-빈을-이용한-aop-적용
+render_with_liquid: false
 image: /images/140/img.png
 ---
 

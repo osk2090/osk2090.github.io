@@ -4,6 +4,7 @@ title: "Oracle DB에서 Transaction ID 를 통해 데이터 롤백과정 정리"
 date: 2024-11-23 15:40:01 +0900
 categories: [Database]
 slug: post-143-oracle-db에서-transaction-id-를-통해-데이터-롤백과정-정리
+render_with_liquid: false
 ---
 
 1. 트랜잭션이 시작되면서 데이터 변경이 발생, 변경이 발생한 데이터의 로우의 헤더

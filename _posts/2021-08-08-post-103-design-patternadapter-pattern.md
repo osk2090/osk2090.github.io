@@ -4,6 +4,7 @@ title: "[Design Pattern]Adapter Pattern"
 date: 2021-08-08 20:17:09 +0900
 categories: [Design Pattern]
 slug: post-103-design-patternadapter-pattern
+render_with_liquid: false
 image: /images/103/img.gif
 ---
 

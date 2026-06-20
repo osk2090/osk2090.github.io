@@ -4,6 +4,7 @@ title: "InnoDB 클러스터링 및 세컨더리 인덱스: 페이지 분할(.ibd
 date: 2024-12-26 14:47:14 +0900
 categories: [Database]
 slug: post-148-innodb-클러스터링-및-세컨더리-인덱스-페이지-분할ibd파일
+render_with_liquid: false
 image: /images/148/img.png
 ---
 

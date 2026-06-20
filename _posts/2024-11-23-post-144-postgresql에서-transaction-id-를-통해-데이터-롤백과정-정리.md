@@ -4,6 +4,7 @@ title: "Postgresql에서 Transaction ID 를 통해 데이터 롤백과정 정리
 date: 2024-11-23 16:13:58 +0900
 categories: [Database]
 slug: post-144-postgresql에서-transaction-id-를-통해-데이터-롤백과정-정리
+render_with_liquid: false
 ---
 
 1. 예시의 데이터로 tmin=1, value="one"데이터가 트랜잭션으로 수정이 발생하면

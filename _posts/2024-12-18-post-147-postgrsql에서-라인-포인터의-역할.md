@@ -4,6 +4,7 @@ title: "Postgrsql에서 라인 포인터의 역할"
 date: 2024-12-18 13:54:51 +0900
 categories: [Database]
 slug: post-147-postgrsql에서-라인-포인터의-역할
+render_with_liquid: false
 image: /images/147/img.png
 ---
 

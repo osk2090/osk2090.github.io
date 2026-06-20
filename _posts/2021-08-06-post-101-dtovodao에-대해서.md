@@ -4,6 +4,7 @@ title: "DTO,VO.DAO에 대해서"
 date: 2021-08-06 14:48:31 +0900
 categories: [Etc]
 slug: post-101-dtovodao에-대해서
+render_with_liquid: false
 ---
 
 ### DAO(Data Access Object)

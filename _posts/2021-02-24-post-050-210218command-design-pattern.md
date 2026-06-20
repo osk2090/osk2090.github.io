@@ -4,6 +4,7 @@ title: "[210218]Command Design Pattern"
 date: 2021-02-24 19:09:49 +0900
 categories: [Design Pattern]
 slug: post-050-210218command-design-pattern
+render_with_liquid: false
 ---
 
 ### - 학습 목표 달성 확인 목록

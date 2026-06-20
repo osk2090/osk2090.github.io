@@ -4,6 +4,7 @@ title: "Spring-Batch:Skip/Retry"
 date: 2021-08-30 12:57:59 +0900
 categories: [Spring Batch]
 slug: post-122-spring-batchskip-retry
+render_with_liquid: false
 ---
 
 참조:<https://oingdaddy.tistory.com/183>

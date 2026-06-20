@@ -4,6 +4,7 @@ title: "Spring-Batch"
 date: 2021-08-23 16:31:08 +0900
 categories: [Spring Batch]
 slug: post-114-spring-batch
+render_with_liquid: false
 image: /images/114/img.jpg
 ---
 

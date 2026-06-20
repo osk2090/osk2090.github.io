@@ -4,6 +4,7 @@ title: "[Design Pattern]Facade Pattern"
 date: 2021-08-10 09:07:05 +0900
 categories: [Design Pattern]
 slug: post-107-design-patternfacade-pattern
+render_with_liquid: false
 image: /images/107/img.png
 ---
 

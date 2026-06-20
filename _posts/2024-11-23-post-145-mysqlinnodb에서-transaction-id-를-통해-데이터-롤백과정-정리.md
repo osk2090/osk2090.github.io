@@ -4,6 +4,7 @@ title: "Mysql(InnoDB)에서 Transaction ID 를 통해 데이터 롤백과정 정
 date: 2024-11-23 16:40:34 +0900
 categories: [Database]
 slug: post-145-mysqlinnodb에서-transaction-id-를-통해-데이터-롤백과정-정리
+render_with_liquid: false
 ---
 
 1. 트랜잭션과 함께 데이터 변경이 발생하면 해당 데이터 로우의 trx\_id는 최신 트랜잭션 id를 저장

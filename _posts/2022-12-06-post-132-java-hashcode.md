@@ -4,6 +4,7 @@ title: "[Java] hashCode()"
 date: 2022-12-06 13:13:20 +0900
 categories: [Java]
 slug: post-132-java-hashcode
+render_with_liquid: false
 ---
 
 우선 클래스-인스턴스에서의 hashCode()는 인스턴스 주소값을 정수로 바꾼다.

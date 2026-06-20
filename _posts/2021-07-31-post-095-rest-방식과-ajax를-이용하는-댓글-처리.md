@@ -4,6 +4,7 @@ title: "REST 방식과 Ajax를 이용하는 댓글 처리"
 date: 2021-07-31 15:14:04 +0900
 categories: [Etc]
 slug: post-095-rest-방식과-ajax를-이용하는-댓글-처리
+render_with_liquid: false
 image: /images/95/img.png
 ---
 

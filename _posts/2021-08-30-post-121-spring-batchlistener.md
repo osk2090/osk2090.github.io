@@ -4,6 +4,7 @@ title: "Spring-Batch:Listener"
 date: 2021-08-30 09:36:03 +0900
 categories: [Spring Batch]
 slug: post-121-spring-batchlistener
+render_with_liquid: false
 image: /images/121/img.png
 ---
 

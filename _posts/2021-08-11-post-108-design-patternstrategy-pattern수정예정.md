@@ -4,6 +4,7 @@ title: "[Design Pattern]Strategy Pattern(수정예정)"
 date: 2021-08-11 09:07:37 +0900
 categories: [Design Pattern]
 slug: post-108-design-patternstrategy-pattern수정예정
+render_with_liquid: false
 ---
 
 참조:<https://velog.io/@max9106/Java-%EC%A0%84%EB%9E%B5%ED%8C%A8%ED%84%B4strategy-pattern>

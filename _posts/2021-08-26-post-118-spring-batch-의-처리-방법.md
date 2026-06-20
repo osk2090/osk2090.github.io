@@ -4,6 +4,7 @@ title: "Spring-Batch 의 처리 방법"
 date: 2021-08-26 17:17:53 +0900
 categories: [Spring Batch]
 slug: post-118-spring-batch-의-처리-방법
+render_with_liquid: false
 ---
 
 배치를 처리할 수 있는 방법은 크게 2가지가 된다.

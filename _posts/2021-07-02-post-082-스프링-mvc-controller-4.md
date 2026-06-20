@@ -4,6 +4,7 @@ title: "스프링 MVC Controller-4"
 date: 2021-07-02 16:55:59 +0900
 categories: [Spring]
 slug: post-082-스프링-mvc-controller-4
+render_with_liquid: false
 image: /images/82/img.png
 ---
 

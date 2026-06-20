@@ -4,6 +4,7 @@ title: "Spring-Batch:ItemReader 관련 모음"
 date: 2021-08-27 10:35:52 +0900
 categories: [Spring Batch]
 slug: post-120-spring-batchitemreader-관련-모음
+render_with_liquid: false
 ---
 
 ### ItemReader Interface

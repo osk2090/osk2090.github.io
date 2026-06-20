@@ -4,6 +4,7 @@ title: "PostgreSQL FORK 영역"
 date: 2026-03-22 13:56:22 +0900
 categories: [Database]
 slug: post-153-postgresql-fork-영역
+render_with_liquid: false
 image: /images/153/img.png
 ---
 
