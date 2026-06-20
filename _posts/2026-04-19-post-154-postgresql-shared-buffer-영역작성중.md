@@ -1,7 +1,8 @@
 ---
 layout: default
 title: "PostgreSQL Shared Buffer 영역(작성중)"
-date: 2026-06-15 13:43:08 +0900
+date: 2026-04-19 13:43:08 +0900
+categories: [Database]
 slug: post-154-postgresql-shared-buffer-영역작성중
 ---
 
