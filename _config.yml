@@ -1,6 +1,6 @@
 theme: jekyll-theme-cayman
 title: "문어발 개발자 오은석의 DevLog"
 description: "자바, 스프링, 데이터베이스부터 쿠버네티스까지 — 견고한 백엔드 시스템 구축을 위한 배움과 경험의 기록입니다."
-url: "https://osk2090.github.io"
+url: "https://blog.nebulix.io"
 plugins:
   - jekyll-sitemap

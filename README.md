@@ -92,7 +92,7 @@ bundle exec jekyll serve
    # 원격 저장소에 푸시
    git push
    ```
-2. 푸시 후 약 1~2분 뒤에 [https://osk2090.github.io/](https://osk2090.github.io/)에 접속하여 확인합니다.
+2. 푸시 후 약 1~2분 뒤에 [https://blog.nebulix.io/](https://blog.nebulix.io/)에 접속하여 확인합니다.
 
 ---
 
