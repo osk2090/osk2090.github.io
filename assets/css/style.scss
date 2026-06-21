@@ -1,0 +1,366 @@
+---
+---
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+// Overrides for Cayman Theme Variables
+$body-text-color: #334155;
+$body-link-color: #4f46e5;
+$header-bg-color: #0f172a;
+$header-bg-color-secondary: #311042;
+$section-headings-color: #1e1b4b;
+
+@import "{{ site.theme }}";
+
+// ==========================================
+// Custom Modern & Premium Styling Overlays
+// ==========================================
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  background-color: #f8fafc;
+  color: #334155;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+// ------------------------------------------
+// Page Header Refinements
+// ------------------------------------------
+.page-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%) !important;
+  position: relative;
+  overflow: hidden;
+  padding: 5rem 1.5rem !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    left: -10%;
+    width: 60%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+    filter: blur(60px);
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    right: -10%;
+    width: 50%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(219, 39, 119, 0.1) 0%, transparent 75%);
+    filter: blur(50px);
+    pointer-events: none;
+  }
+}
+
+.project-name {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 2.75rem !important;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.75rem !important;
+  background: linear-gradient(to right, #ffffff, #e2e8f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.project-tagline {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 1.15rem !important;
+  color: #94a3b8 !important;
+  max-width: 700px;
+  margin: 0 auto !important;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+// ------------------------------------------
+// Home Controls & Search
+// ------------------------------------------
+.blog-controls {
+  margin-bottom: 2.5rem;
+}
+
+#search-input {
+  background: #ffffff;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.01) !important;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  padding: 14px 20px !important;
+  font-size: 0.95em !important;
+
+  &:focus {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12) !important;
+    outline: none !important;
+    background: #ffffff !important;
+  }
+}
+
+.category-container {
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.category-btn {
+  background-color: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #64748b !important;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500 !important;
+  border-radius: 30px !important;
+  padding: 8px 18px !important;
+  font-size: 0.85rem !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+
+  &:hover {
+    background-color: #e2e8f0 !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+    transform: translateY(-1px);
+  }
+
+  &.active {
+    background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%) !important;
+    border-color: transparent !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2) !important;
+  }
+}
+
+// ------------------------------------------
+// Premium Post Card Layout
+// ------------------------------------------
+.post-grid {
+  gap: 1.5rem !important;
+}
+
+.post-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
+  border-radius: 16px !important;
+  padding: 1.75rem !important;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.01) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.02) !important;
+    border-color: rgba(99, 102, 241, 0.3) !important;
+
+    .post-link {
+      color: #4f46e5 !important;
+    }
+  }
+}
+
+.post-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.post-card-date {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.post-card-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.3rem !important;
+  line-height: 1.4;
+}
+
+.post-link {
+  font-family: 'Outfit', sans-serif;
+  color: #0f172a !important;
+  font-size: 1.3rem !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease;
+  line-height: 1.4;
+  font-weight: 700 !important;
+}
+
+.category-badge {
+  background-color: #e0e7ff !important;
+  color: #4f46e5 !important;
+  border: 1px solid #c7d2fe !important;
+  border-radius: 8px !important;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600 !important;
+  padding: 4px 10px !important;
+}
+
+.post-excerpt {
+  color: #64748b !important;
+  font-size: 0.95rem !important;
+  line-height: 1.65 !important;
+  margin-top: 0.75rem;
+}
+
+// ------------------------------------------
+// Article & Typography Refinements
+// ------------------------------------------
+.main-content {
+  max-width: 50rem !important;
+  padding: 3rem 1.5rem !important;
+
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    font-weight: 700;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  h2 {
+    font-size: 1.7rem;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 0.5rem;
+  }
+
+  h3 {
+    font-size: 1.35rem;
+  }
+
+  p {
+    margin-bottom: 1.6rem;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #334155;
+  }
+
+  strong {
+    color: #0f172a;
+    font-weight: 600;
+  }
+
+  ul, ol {
+    margin-bottom: 1.6rem;
+    padding-left: 2rem;
+    font-size: 1.05rem;
+    line-height: 1.8;
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  blockquote {
+    border-left: 4px solid #6366f1 !important;
+    padding: 0.75rem 1.5rem !important;
+    margin: 1.75rem 0 !important;
+    background-color: #f8fafc !important;
+    color: #475569 !important;
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 0.95rem;
+
+    th {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      font-weight: 600;
+      border-bottom: 2px solid #cbd5e1;
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+
+    td {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 0.75rem 1rem;
+    }
+
+    tr:hover {
+      background-color: #f8fafc;
+    }
+  }
+}
+
+// ------------------------------------------
+// Code & Syntax Styling
+// ------------------------------------------
+.highlighter-rouge, pre.highlight, code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+}
+
+// Inline code
+code {
+  background-color: #f1f5f9 !important;
+  color: #db2777 !important;
+  padding: 0.2rem 0.4rem !important;
+  border-radius: 6px !important;
+  font-size: 0.875em !important;
+  border: 1px solid rgba(226, 232, 240, 0.6) !important;
+}
+
+// Code blocks wrapper
+div.highlighter-rouge {
+  margin: 1.75rem 0 !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.01) !important;
+  border: 1px solid #e2e8f0 !important;
+
+  pre.highlight {
+    margin: 0 !important;
+    padding: 1.25rem !important;
+    background-color: #0f172a !important; // Sleek dark slate background
+    color: #e2e8f0 !important;
+    overflow-x: auto !important;
+    font-size: 0.9rem !important;
+    line-height: 1.65 !important;
+  }
+
+  code {
+    background-color: transparent !important;
+    color: inherit !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+  }
+}
+
+// ------------------------------------------
+// Site Footer
+// ------------------------------------------
+.site-footer {
+  border-top: 1px solid #e2e8f0 !important;
+  padding-top: 2rem !important;
+  margin-top: 4rem !important;
+  color: #94a3b8 !important;
+  font-size: 0.9rem !important;
+
+  .site-footer-credits {
+    color: #94a3b8 !important;
+  }
+}

@@ -4,20 +4,20 @@ title: "문어발 개발자 오은석의 DevLog"
 description: "자바, 스프링, 데이터베이스부터 쿠버네티스까지 — 견고한 백엔드 시스템 구축을 위한 배움과 경험의 기록입니다."
 ---
 
-<div class="blog-controls" style="margin-bottom: 2em; display: flex; flex-direction: column; gap: 1em;">
+<div class="blog-controls">
   <!-- 검색 창 -->
-  <div class="search-wrapper" style="position: relative; width: 100%;">
-    <input type="text" id="search-input" placeholder="🔍 제목 또는 내용 검색..." style="width: 100%; padding: 12px 20px; font-size: 1em; border: 2px solid #e1e4e8; border-radius: 8px; box-sizing: border-box; outline: none; transition: border-color 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+  <div class="search-wrapper">
+    <input type="text" id="search-input" placeholder="🔍 제목 또는 내용 검색...">
   </div>
 
   <!-- 카테고리 필터 버튼 목록 -->
-  <div class="category-container" style="display: flex; flex-wrap: wrap; gap: 0.6em; padding-bottom: 0.5em; border-bottom: 1px solid #eaecef;">
-    <button class="category-btn active" data-category="all" style="padding: 8px 16px; font-size: 0.9em; border: 1px solid #1e6bb8; border-radius: 20px; background-color: #1e6bb8; color: white; cursor: pointer; font-weight: bold; transition: all 0.2s ease;">
+  <div class="category-container">
+    <button class="category-btn active" data-category="all">
       전체보기 ({{ site.posts.size }})
     </button>
     {% for category in site.categories %}
       {% assign cat_id = category[0] | downcase | replace: ' ', '-' %}
-      <button class="category-btn" data-category="{{ cat_id }}" style="padding: 8px 16px; font-size: 0.9em; border: 1px solid #e1e4e8; border-radius: 20px; background-color: #f6f8fa; color: #586069; cursor: pointer; transition: all 0.2s ease;">
+      <button class="category-btn" data-category="{{ cat_id }}">
         {{ category[0] }} ({{ category[1].size }})
       </button>
     {% endfor %}
@@ -25,26 +25,26 @@ description: "자바, 스프링, 데이터베이스부터 쿠버네티스까지 
 </div>
 
 <!-- 포스트 카드 그리드 -->
-<div class="post-grid" id="post-grid" style="display: flex; flex-direction: column; gap: 1.2em;">
+<div class="post-grid" id="post-grid">
   {% if site.posts.size > 0 %}
     {% for post in site.posts %}
       {% assign post_cat_id = post.categories[0] | downcase | replace: ' ', '-' %}
-      <article class="post-card" data-category="{{ post_cat_id }}" data-title="{{ post.title | downcase }}" style="border: 1px solid #e1e4e8; border-radius: 8px; padding: 1.5em; background-color: white; box-shadow: 0 4px 6px rgba(0,0,0,0.03); transition: transform 0.2s ease, box-shadow 0.2s ease; display: block;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8em; flex-wrap: wrap; gap: 0.5em;">
-          <span style="font-size: 0.85em; color: #586069; font-weight: 500;">
+      <article class="post-card" data-category="{{ post_cat_id }}" data-title="{{ post.title | downcase }}">
+        <div class="post-card-meta">
+          <span class="post-card-date">
             📅 {{ post.date | date: "%Y년 %m월 %d일" }}
           </span>
-          <span class="category-badge" style="font-size: 0.75em; padding: 4px 10px; border-radius: 12px; font-weight: bold; background-color: #e2f0fd; color: #1e6bb8; border: 1px solid #b8daff;">
+          <span class="category-badge">
             {{ post.categories[0] | default: "Etc" }}
           </span>
         </div>
-        <h3 style="margin: 0 0 0.5em 0; font-size: 1.25em; line-height: 1.4;">
-          <a class="post-link" href="{{ post.url | relative_url }}" style="text-decoration: none; color: #1e6bb8; font-weight: bold;">
+        <h3 class="post-card-title">
+          <a class="post-link" href="{{ post.url | relative_url }}">
             {{ post.title }}
           </a>
         </h3>
         <!-- 본문 일부 추출 -->
-        <p class="post-excerpt" style="margin: 0; color: #586069; font-size: 0.9em; line-height: 1.5; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+        <p class="post-excerpt">
           {{ post.content | strip_html | truncate: 150 }}
         </p>
       </article>
@@ -61,33 +61,6 @@ description: "자바, 스프링, 데이터베이스부터 쿠버네티스까지 
   </div>
 </div>
 
-<style>
-.category-btn:hover {
-  border-color: #1e6bb8 !important;
-  color: #1e6bb8 !important;
-  background-color: #f1f8ff !important;
-  transform: translateY(-1px);
-}
-.category-btn.active {
-  background-color: #1e6bb8 !important;
-  color: white !important;
-  border-color: #1e6bb8 !important;
-  box-shadow: 0 2px 4px rgba(30,107,184,0.3);
-}
-.post-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.08) !important;
-  border-color: #1e6bb8 !important;
-}
-.post-link:hover {
-  text-decoration: underline !important;
-  color: #154c80 !important;
-}
-#search-input:focus {
-  border-color: #1e6bb8 !important;
-  box-shadow: 0 0 0 3px rgba(30,107,184,0.15) !important;
-}
-</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
