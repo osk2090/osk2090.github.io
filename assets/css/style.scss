@@ -350,6 +350,15 @@ div.highlighter-rouge {
   }
 }
 
+// Remove the red background from syntax error highlights (e.g. Korean text parsing errors in Rouge)
+.highlighter-rouge .err,
+.highlight .err,
+pre.highlight .err {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+
 // ------------------------------------------
 // Site Footer
 // ------------------------------------------
