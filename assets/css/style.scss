@@ -335,10 +335,28 @@ div.highlighter-rouge {
     margin: 0 !important;
     padding: 1.25rem !important;
     background-color: #0f172a !important; // Sleek dark slate background
-    color: #e2e8f0 !important;
+    color: #f8f8f2 !important;
     overflow-x: auto !important;
     font-size: 0.9rem !important;
     line-height: 1.65 !important;
+
+    // Dracula/Monokai premium syntax color overrides
+    .c, .ch, .cm, .cp, .cpf, .c1, .cs { color: #64748b !important; font-style: italic; } // comments
+    .k, .kd, .kn, .kp, .kr, .kv { color: #ff79c6 !important; font-weight: bold; } // keywords
+    .o, .ow { color: #ff79c6 !important; } // operators
+    .p { color: #f8f8f2 !important; } // punctuation
+    .m, .mb, .mf, .mh, .mi, .il, .mo, .mx { color: #bd93f9 !important; } // numbers
+    .s, .sa, .sb, .sc, .sd, .s2, .se, .sh, .si, .sx, .sr, .s1, .ss { color: #f1fa8c !important; } // strings
+    
+    // names, variables, identifiers
+    .n, .na, .no, .nv, .vc, .vg, .vi, .vm, .nx { color: #f8f8f2 !important; } 
+    
+    // functions, class names, types
+    .nf, .fm { color: #50fa7b !important; } 
+    .nc, .ne, .nt, .nn { color: #8be9fd !important; }
+    
+    .nb, .bp { color: #ffb86c !important; } // builtins
+    .err { color: #f8f8f2 !important; background-color: transparent !important; } // error
   }
 
   code {
@@ -350,12 +368,20 @@ div.highlighter-rouge {
   }
 }
 
-// Remove the red background from syntax error highlights (e.g. Korean text parsing errors in Rouge)
-.highlighter-rouge .err,
-.highlight .err,
-pre.highlight .err {
-  background-color: transparent !important;
-  color: inherit !important;
+// Global pre.highlight fallback
+pre.highlight {
+  color: #f8f8f2 !important;
+  .c, .ch, .cm, .cp, .cpf, .c1, .cs { color: #64748b !important; font-style: italic; }
+  .k, .kd, .kn, .kp, .kr, .kv { color: #ff79c6 !important; font-weight: bold; }
+  .o, .ow { color: #ff79c6 !important; }
+  .p { color: #f8f8f2 !important; }
+  .m, .mb, .mf, .mh, .mi, .il, .mo, .mx { color: #bd93f9 !important; }
+  .s, .sa, .sb, .sc, .sd, .s2, .se, .sh, .si, .sx, .sr, .s1, .ss { color: #f1fa8c !important; }
+  .n, .na, .no, .nv, .vc, .vg, .vi, .vm, .nx { color: #f8f8f2 !important; } 
+  .nf, .fm { color: #50fa7b !important; } 
+  .nc, .ne, .nt, .nn { color: #8be9fd !important; }
+  .nb, .bp { color: #ffb86c !important; }
+  .err { color: #f8f8f2 !important; background-color: transparent !important; }
 }
 
 
