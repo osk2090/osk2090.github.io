@@ -565,6 +565,7 @@ pre.highlight {
 // ------------------------------------------
 .pagination-controls {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
@@ -600,6 +601,14 @@ pre.highlight {
   &.disabled {
     opacity: 0.35;
     cursor: not-allowed;
+  }
+  
+  &.dots {
+    cursor: default;
+    background-color: transparent;
+    border-color: transparent;
+    color: #6272a4;
+    pointer-events: none;
   }
 }
 

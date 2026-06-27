@@ -153,18 +153,59 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     paginationContainer.appendChild(prevBtn);
     
-    // Page numbers
-    for (let i = 1; i <= totalPages; i++) {
-      const pageBtn = document.createElement('div');
-      pageBtn.className = `page-num ${i === currentPage ? 'active' : ''}`;
-      pageBtn.textContent = i;
-      pageBtn.addEventListener('click', () => {
-        currentPage = i;
-        filterPosts();
-        window.scrollTo({ top: 300, behavior: 'smooth' });
-      });
-      paginationContainer.appendChild(pageBtn);
+    // Page numbers range calculation
+    const pageButtons = [];
+    
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageButtons.push(i);
+      }
+    } else {
+      pageButtons.push(1);
+      
+      let start = Math.max(2, currentPage - 1);
+      let end = Math.min(totalPages - 1, currentPage + 1);
+      
+      if (currentPage <= 3) {
+        end = 4;
+      } else if (currentPage >= totalPages - 2) {
+        start = totalPages - 3;
+      }
+      
+      if (start > 2) {
+        pageButtons.push('...');
+      }
+      
+      for (let i = start; i <= end; i++) {
+        pageButtons.push(i);
+      }
+      
+      if (end < totalPages - 1) {
+        pageButtons.push('...');
+      }
+      
+      pageButtons.push(totalPages);
     }
+    
+    // Render page buttons
+    pageButtons.forEach(item => {
+      if (item === '...') {
+        const dotSpan = document.createElement('div');
+        dotSpan.className = 'page-num dots';
+        dotSpan.textContent = '...';
+        paginationContainer.appendChild(dotSpan);
+      } else {
+        const pageBtn = document.createElement('div');
+        pageBtn.className = `page-num ${item === currentPage ? 'active' : ''}`;
+        pageBtn.textContent = item;
+        pageBtn.addEventListener('click', () => {
+          currentPage = item;
+          filterPosts();
+          window.scrollTo({ top: 300, behavior: 'smooth' });
+        });
+        paginationContainer.appendChild(pageBtn);
+      }
+    });
     
     // Next button
     const nextBtn = document.createElement('div');
