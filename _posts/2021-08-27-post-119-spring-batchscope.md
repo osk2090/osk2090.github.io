@@ -4,6 +4,7 @@ title: "Spring-Batch:@Scope"
 date: 2021-08-27 09:48:13 +0900
 categories: [Spring Batch]
 slug: post-119-spring-batchscope
+published: false
 ---
 {% raw %}
 

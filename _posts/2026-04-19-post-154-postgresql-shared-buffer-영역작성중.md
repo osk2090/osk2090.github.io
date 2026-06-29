@@ -4,6 +4,7 @@ title: "PostgreSQL Shared Buffer 영역"
 date: 2026-04-19 12:00:00 +0900
 categories: [Database]
 slug: post-154-postgresql-shared-buffer-영역작성중
+published: false
 ---
 
 {% raw %}
