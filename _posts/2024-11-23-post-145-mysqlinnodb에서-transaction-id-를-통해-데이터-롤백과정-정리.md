@@ -5,6 +5,7 @@ date: 2024-11-23 16:40:34 +0900
 categories: [Database]
 slug: post-145-mysqlinnodb에서-transaction-id-를-통해-데이터-롤백과정-정리
 ---
+{% raw %}
 
 1. 트랜잭션과 함께 데이터 변경이 발생하면 해당 데이터 로우의 trx\_id는 최신 트랜잭션 id를 저장
 2. 롤백 세그먼트 영역이 별도로 존재하는데 거기에는 undo 세그먼트가 그 하위에 undo 로그로 변경 전의 데이터를 저장
@@ -51,3 +52,4 @@ COMMIT;
 
 -- Undo 로그는 일정 시간이 지나면 정리됨
 ```
+{% endraw %}

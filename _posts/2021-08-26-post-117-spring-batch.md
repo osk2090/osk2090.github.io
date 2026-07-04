@@ -6,6 +6,7 @@ categories: [Spring Batch]
 slug: post-117-spring-batch
 image: /images/117/img.png
 ---
+{% raw %}
 
 출처:<https://cheese10yun.github.io/spring-batch-basic/>
 
@@ -526,3 +527,4 @@ Job Execution:Job Parameter로 실행한 Job의 실행,1번째 시도 혹은 그
 | 5 | STRING | -job.name | orderDailySumJob | 1970-01-01 00:00:00 | 0 | 0 | N |
 
 BATCH\_JOB\_EXECUTION에 대한 Parameter정보들이 저장되는 곳이다 BATCH\_JOB\_EXECUTION, BATCH\_JOB\_EXECUTION\_PARAMS 1:N 관계이며 위 테이블은 ID 5번에 들어가는 parameter 정보들이 저장된다
+{% endraw %}

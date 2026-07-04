@@ -5,6 +5,7 @@ date: 2021-06-13 02:54:13 +0900
 categories: [Spring]
 slug: post-069-spring-framework기본적인-ioc-컨테이너에-들어있는-객체-출력
 ---
+{% raw %}
 
 %[https://gist.github.com/osk2090/aa540b05131757e25177930c4ef05f1e]
 
@@ -46,3 +47,4 @@ org.springframework.context.event.internalEventListenerFactory = org.springframe
 출처: <https://goddaehee.tistory.com/46> [갓대희의 작은공간]
 
 https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=javaking75&logNo=220728817382
+{% endraw %}

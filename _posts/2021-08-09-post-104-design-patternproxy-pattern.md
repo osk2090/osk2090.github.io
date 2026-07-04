@@ -5,6 +5,7 @@ date: 2021-08-09 09:47:22 +0900
 categories: [Design Pattern]
 slug: post-104-design-patternproxy-pattern
 ---
+{% raw %}
 
 참조:<https://coding-factory.tistory.com/711>
 
@@ -130,3 +131,4 @@ Displaying test1.png
 Loading test2.png
 Displaying test2.png
 ```
+{% endraw %}

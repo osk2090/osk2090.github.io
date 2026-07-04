@@ -5,6 +5,7 @@ date: 2021-10-17 02:53:06 +0900
 categories: [Kafka]
 slug: post-126-kafka-aws-연동
 ---
+{% raw %}
 
 ```bash
 $ https://archive.apache.org/dist/kafka/3.0.0/kafka_2.12-3.0.0.tgz//자바 설치
@@ -409,3 +410,4 @@ partition: test-0       low_watermark: 50
 ```
 
 여기서 주의해야 할 점은 토픽의 특정 레코드 하나만 삭제되는 것이 아니라 파티션에 존재하는 가장 오래된 오프셋부터 지정한 오프셋까지 삭제된다는 점이다.카프카에서는 토픽의 파티션에 저장된 특정 데이터만 삭제할 수 없나는 점 명심해야 한다.
+{% endraw %}

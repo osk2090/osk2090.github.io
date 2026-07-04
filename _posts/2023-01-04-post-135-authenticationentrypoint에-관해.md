@@ -6,6 +6,7 @@ categories: [Spring]
 slug: post-135-authenticationentrypoint에-관해
 image: /images/135/img.png
 ---
+{% raw %}
 
 Spring Security와 JWT(JSON Web Token)를 결합하여 API 서버를 설계할 때 흔히 마주치는 시나리오 중 하나는, **인증되지 않은 사용자(예: Authorization 헤더에 JWT 토큰이 누락되었거나 유효하지 않은 경우)가 권한이 필요한 보호된 API에 접근했을 때 적절한 예외 응답을 클라이언트에 전달하는 것**입니다.
 
@@ -121,3 +122,4 @@ public class SecurityConfig {
 ![](/images/135/img_2.png)
 
 * 참조: <https://mighty96.github.io/til/access-authentication/>
+{% endraw %}

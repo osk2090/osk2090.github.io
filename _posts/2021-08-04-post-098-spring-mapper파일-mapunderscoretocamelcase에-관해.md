@@ -5,6 +5,7 @@ date: 2021-08-04 19:04:20 +0900
 categories: [Spring]
 slug: post-098-spring-mapper파일-mapunderscoretocamelcase에-관해
 ---
+{% raw %}
 
 ```java
 <resultMap id="memberMap" type="member">
@@ -43,3 +44,4 @@ mybatis-config.xml
 이렇게 설정해주면 DB의 컬럼명과 VO 또는 도메인에서 camelcase로 자동으로 변환하여 매핑해준다.
 
 참조:<https://solbel.tistory.com/1520>
+{% endraw %}

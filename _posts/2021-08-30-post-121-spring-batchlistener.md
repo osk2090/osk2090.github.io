@@ -6,6 +6,7 @@ categories: [Spring Batch]
 slug: post-121-spring-batchlistener
 image: /images/121/img.png
 ---
+{% raw %}
 
 참조:<https://oingdaddy.tistory.com/180>
 
@@ -105,3 +106,4 @@ public class SavePersonListener {
                 .build();
     }
 ```
+{% endraw %}
