@@ -1,105 +1,39 @@
-# 📝 나의 개발 블로그 운영 가이드
+# Chirpy Starter
 
-이 저장소는 GitHub Pages와 Jekyll(Cayman 테마)을 이용한 개인 기술 블로그입니다.  
-글 작성 및 관리법을 아래 가이드에 따라 쉽게 따라 해보세요!
+[![Gem Version](https://img.shields.io/gem/v/jekyll-theme-chirpy)][gem]&nbsp;
+[![GitHub license](https://img.shields.io/github/license/cotes2020/chirpy-starter.svg?color=blue)][mit]
 
----
+A minimal, ready-to-use template for creating a blog with the [**Chirpy**][chirpy] Jekyll theme. Get up and running in minutes with all critical files pre-configured.
 
-## 🚀 1. 새 글 작성하기 (가장 쉬운 방법)
+## Why This Starter Exists
 
-새 글 생성 도구인 `new_post.py` 스크립트를 사용하면 양식과 파일명이 완벽히 설정된 새 포스트 파일을 즉시 만들 수 있습니다.
+When installing Chirpy through [RubyGems.org][gem], Jekyll can only read a subset of theme files (`_data`, `_layouts`, `_includes`, `_sass`, `assets`) and limited `_config.yml` options from the gem. As a result, users cannot enjoy the full out-of-the-box experience that Chirpy offers.
 
-1. 에디터 터미널에서 아래 명령어를 실행합니다.
-   ```bash
-   python3 new_post.py
-   ```
-2. 화면의 지시에 따라 정보를 입력합니다:
-   - **제목 입력** (예: `Spring Boot와 JPA 시작하기`)
-   - **카테고리 번호 선택** (목록 중 선택)
-   - **URL 슬러그 확인** (엔터 클릭 시 기본값 자동 설정)
-3. 출력된 파일 링크를 누르거나, `_posts/` 폴더에 새로 생성된 마크다운(`.md`) 파일을 열어 본문을 작성합니다.
+To unlock all features, the following files must be present in your Jekyll site:
 
----
-
-## ✍️ 2. 포스트 본문 작성 규칙
-
-새 글 파일의 구조는 다음과 같이 구성되어 있습니다:
-
-```yaml
----
-layout: default
-title: "글 제목"
-date: 2026-06-20 19:30:00 +0900
-categories: [Spring]
-slug: spring-boot-jpa-start
----
-{% raw %}
-
-여기에 글 내용을 마크다운 형식으로 편하게 작성하세요.
-
-{% endraw %}
+```shell
+.
+├── _config.yml
+├── _plugins
+├── _tabs
+└── index.html
 ```
 
-### ⚠️ 중요 규칙
-- **본문 전체가 `{% raw %}`와 `{% endraw %}`로 감싸여 있습니다.**  
-  코드 블록 등에 프로그래밍 중괄호(`{ }`)나 double curly braces `{{` 가 들어가면 Jekyll 빌드 엔진이 에러를 냅니다. 이를 원천 방지하기 위해 추가된 설정이므로, **글 내용은 반드시 이 두 태그 사이에 작성**해 주세요.
-- **이미지 삽입 방법:**
-  1. 이미지 파일을 `images/` 하위 폴더(예: `images/my-post/img.png`)에 넣습니다.
-  2. 마크다운 본문에 다음과 같이 절대 경로(`/images/...`) 형식으로 삽입합니다:
-     ```markdown
-     ![설명](/images/my-post/img.png)
-     ```
+This starter bundles those files from the latest **Chirpy** release along with a [CD][CD] workflow, so you can start writing immediately.
 
----
+## Usage
 
-## 💻 3. 로컬에서 미리보기 (선택 사항)
+Check out the [theme's docs](https://github.com/cotes2020/jekyll-theme-chirpy/wiki).
 
-글을 GitHub에 올리기 전에 내 컴퓨터에서 웹사이트 화면으로 미리 확인하고 싶을 때 사용합니다.
+## Contributing
 
-### 최초 설정 (최신 Ruby 환경이 없는 경우)
-Mac 터미널에서 아래 명령어로 최신 Ruby 버전을 설치합니다:
-```bash
-brew install rbenv ruby-build
-rbenv install 3.2.2
-rbenv global 3.2.2
-```
-*(터미널 재시작 후)*
-```bash
-bundle install
-```
+This repository is automatically updated with new releases from the theme repository. If you encounter any issues or want to contribute to its improvement, please visit the [theme repository][chirpy] to provide feedback.
 
-### 로컬 서버 구동
-블로그 폴더 루트에서 아래 명령어를 실행합니다:
-```bash
-bundle exec jekyll serve
-```
-실행이 완료되면 브라우저에서 **[http://localhost:4000](http://localhost:4000)**으로 접속해 글이 잘 보이는지 확인합니다. (저장할 때마다 실시간으로 화면이 업데이트됩니다.)
+## License
 
----
+This work is published under [MIT][mit] License.
 
-## 🌐 4. GitHub에 업로드 및 배포하기
-
-작성한 글을 인터넷(실서버)에 발행하려면 변경 사항을 GitHub에 푸시(Push)하기만 하면 됩니다.
-
-1. 작업 완료 후 터미널에 아래 명령어를 입력합니다:
-   ```bash
-   # 변경된 사항 전체 추가
-   git add .
-   
-   # 커밋 메시지 작성
-   git commit -m "Feat: 새 포스트 작성 (주제)"
-   
-   # 원격 저장소에 푸시
-   git push
-   ```
-2. 푸시 후 약 1~2분 뒤에 [https://blog.nebulix.io/](https://blog.nebulix.io/)에 접속하여 확인합니다.
-
----
-
-## 🤫 5. 임시 글 저장하기 (초안 작성)
-
-아직 미완성이라 나중에 발행하고 싶은 글은 `_drafts` 폴더를 활용하세요.
-
-1. 프로젝트 루트에 `_drafts` 폴더를 만듭니다. (이미 생성되어 있다면 건너뛰기)
-2. `_drafts/my-temporary-draft.md`에 글을 작성해 둡니다. (GitHub에 푸시해도 사이트에는 노출되지 않습니다.)
-3. 글이 최종 완성되면 파일명을 `YYYY-MM-DD-slug.md` 형식으로 변경하고 `_posts/` 폴더로 이동한 뒤 푸시하면 공식 발행됩니다.
+[gem]: https://rubygems.org/gems/jekyll-theme-chirpy
+[chirpy]: https://github.com/cotes2020/jekyll-theme-chirpy/
+[CD]: https://en.wikipedia.org/wiki/Continuous_deployment
+[mit]: https://github.com/cotes2020/chirpy-starter/blob/master/LICENSE

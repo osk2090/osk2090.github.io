@@ -34,7 +34,7 @@ TEMPORARY TABLESPACE TEMP;
 
 오라클에서 테이블스페이스는 **데이터베이스의 논리적인 저장 구조이며, 물리적인 데이터 파일(.dbf)들과 1대N 관계로 매핑**됩니다.
 
-```
+```text
 [Oracle Database]
    └─ Tablespace (논리적 공간: SYSTEM, USERS, TEMP 등)
          └─ Data Files (물리적 파일: system01.dbf, users01.dbf, temp01.dbf 등)
