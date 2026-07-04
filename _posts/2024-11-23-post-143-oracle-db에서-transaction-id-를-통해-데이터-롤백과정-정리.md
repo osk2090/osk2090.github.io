@@ -5,7 +5,6 @@ date: 2024-11-23 15:40:01 +0900
 categories: [Database]
 slug: post-143-oracle-db에서-transaction-id-를-통해-데이터-롤백과정-정리
 ---
-{% raw %}
 
 1. 트랜잭션이 시작되면서 데이터 변경이 발생, 변경이 발생한 데이터의 로우의 헤더
 영역에 ITL(interested trasaction list) 에 해당 트랜잭션 id와 UBA(undo block address) 에는 undo block에 대한 주소값을 저장
@@ -39,4 +38,3 @@ slug: post-143-oracle-db에서-transaction-id-를-통해-데이터-롤백과정-
 |   - TXID = 123                          |
 |-----------------------------------------+
 ```
-{% endraw %}

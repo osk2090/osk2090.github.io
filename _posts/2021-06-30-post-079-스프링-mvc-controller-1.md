@@ -6,7 +6,6 @@ categories: [Spring]
 slug: post-079-스프링-mvc-controller-1
 image: /images/79/img.png
 ---
-{% raw %}
 
 ### @RequestMapping의 변화
 
@@ -315,4 +314,3 @@ http://localhost:8080/controller_war_exploded/sample/ex03?title=date&dueDate=202
 ```java
 INFO : com.osk2090.controller.SampleController - todo: TodoDTO(title=date, dueDate=Wed Jan 01 00:00:00 KST 2020)
 ```
-{% endraw %}

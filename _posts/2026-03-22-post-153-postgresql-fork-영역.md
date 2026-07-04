@@ -6,7 +6,6 @@ categories: [Database]
 slug: post-153-postgresql-fork-영역
 image: /images/153/img.png
 ---
-{% raw %}
 
 ```sql
 create table tab_OID(id integer); --테이블생성
@@ -198,4 +197,3 @@ from pg_visibility('t1'); -- 확인
 모든 페이지의 all-visible과 all-freeze가 true
 
 이렇게 되면 '현재 노출할 수 있는 데이터는 최신화 데이터라서 더이상 확인할 필요가 없다' 라는 의미가 된다.
-{% endraw %}

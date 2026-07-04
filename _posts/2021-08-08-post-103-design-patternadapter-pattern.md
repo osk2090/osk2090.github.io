@@ -6,7 +6,6 @@ categories: [Design Pattern]
 slug: post-103-design-patternadapter-pattern
 image: /images/103/img.gif
 ---
-{% raw %}
 
 참조:<https://lee1535.tistory.com/72?category=819409>
 
@@ -159,4 +158,3 @@ public class PrintBanner implements Print {
 
 1. 이처럼 Adapter 패턴은 이미 존재하는 클래스,특히 그 클래스가 충분한 테스트를 받아서 버그가 적으며              실제로 지금까지 사용된 실적이 있다면 그 클래스를 새로 정의하는 행위보다 해당 클래스를 부품으로써 재이용하기 위함이다.
 2. Adapter 패턴은 기존 클래스를 개조해서 필요한 클래스를 만들기 때문에 필요한 메소드를 빠르게 구현가능하고   디버그도 새로 정의한 Adapter 클래스를 기준으로 하면 되기 때문에 비교적 복잡한 로직 클래스에 새로운 기능을 추가해도 검사가 상당히 쉬어진다는 장점이 있다.
-{% endraw %}

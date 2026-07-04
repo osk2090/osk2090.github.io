@@ -5,7 +5,6 @@ date: 2021-08-11 09:07:37 +0900
 categories: [Design Pattern]
 slug: post-108-design-patternstrategy-pattern
 ---
-{% raw %}
 
 소프트웨어 디자인 패턴 중 가장 빈번하게 사용되고 객체지향 설계의 꽃이라 불리는 패턴이 있습니다. 바로 **전략 패턴(Strategy Pattern)**입니다. 전략 패턴을 적용하면 알고리즘(실제 비즈니스 로직)을 사용하는 클라이언트 코드의 수정 없이도, 런타임에 동적으로 로직을 자유롭게 갈아끼울 수 있는 유연성을 확보할 수 있습니다.
 
@@ -114,4 +113,3 @@ public class Application {
 디자인 패턴 학습 시 클래스 간 결합도를 낮추고 유지보수성을 극대화하기 위해 이 전략 패턴의 사상을 기본 뼈대로 늘 염두에 두시길 추천합니다.
 
 * 참조:<https://velog.io/@max9106/Java-%EC%A0%84%EB%9E%B5%ED%8C%A8%ED%84%B4strategy-pattern>
-{% endraw %}

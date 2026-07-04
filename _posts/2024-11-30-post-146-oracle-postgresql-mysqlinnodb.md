@@ -6,7 +6,6 @@ categories: [Database]
 slug: post-146-oracle-postgresql-mysqlinnodb
 image: /images/146/img.png
 ---
-{% raw %}
 
 ### Oracle
 
@@ -94,4 +93,3 @@ mysql(InnoDB)
 1. 트랜잭션이 커밋되면 해당 커밋시점의 max-trx-id를 언두 블록의 trx-no 컬럼에 저장
 2. 롤백 세그먼트 히스토리 리스트에 커밋된 언두 블록을 등록
 3. trx-sys에 active-trx 리스트중에 커밋된 trx-sturcture를 제외시켜 갱신
-{% endraw %}

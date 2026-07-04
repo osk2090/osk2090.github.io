@@ -5,7 +5,6 @@ date: 2026-01-11 12:12:57 +0900
 categories: [Kubernetes]
 slug: post-150-kubernetes-개념정리
 ---
-{% raw %}
 
 # [Kubernetes] Kind로 실습하며 정리한 핵심 개념 요약 (노드, 컨트롤러, 서비스)
 
@@ -74,4 +73,3 @@ Kind에 백엔드를 올리고, 로컬(Docker Compose)에서 프론트엔드를 
 - **추천 방식:** 백엔드 서비스를 **NodePort** 타입으로 만든다.
 - **Kind 설정 필수:** Kind는 도커 컨테이너 안에 갇혀 있으므로, 클러스터 생성 시 extraPortMappings 설정을 통해 \*\*[내 컴퓨터 포트] ↔ [Kind 노드 포트]\*\*를 연결해줘야 한다.
 - **결과:** 프론트엔드에서 localhost:30000으로 요청을 보내면 → 내 컴퓨터 → Kind 노드 → 파드 순서로 연결된다.
-{% endraw %}

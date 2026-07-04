@@ -5,7 +5,6 @@ date: 2025-04-29 00:03:19 +0900
 categories: [Etc]
 slug: post-149-context-hierarchy-컨텍스트-계층
 ---
-{% raw %}
 
 스프링 컨텍스트 계층은 크게 나누면 자식 컨텍스트인 Servlet-WebApplicationContext가 있고 그의 부모인 Root-WebApplicationContext가 있다.
 
@@ -32,4 +31,3 @@ http 요청시 동작방식(GPT 참고)
 
 - 웹·비즈니스 로직을 깔끔히 분리할 수 있고,
 - 여러 서블릿이 하나의 공통 서비스·리포지토리를 재사용할 수 있다.
-{% endraw %}

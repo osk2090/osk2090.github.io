@@ -6,7 +6,6 @@ categories: [Design Pattern]
 slug: post-106-design-patternobserver-pattern
 image: /images/106/img.jpg
 ---
-{% raw %}
 
 ```java
 public class User1 extends Observer{
@@ -125,4 +124,3 @@ public class Main {
 유저2에서 메시지를 받음 : 공지사항입니다~!
 유저2에서 메시지를 받음 : 안녕하세요~
 ```
-{% endraw %}

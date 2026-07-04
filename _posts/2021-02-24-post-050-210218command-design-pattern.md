@@ -5,7 +5,6 @@ date: 2021-02-24 19:09:49 +0900
 categories: [Design Pattern]
 slug: post-050-210218command-design-pattern
 ---
-{% raw %}
 
 ### - 학습 목표 달성 확인 목록
 
@@ -93,4 +92,3 @@ public static void main(String[] args) throws CloneNotSupportedException {
         }
     }
 ```
-{% endraw %}

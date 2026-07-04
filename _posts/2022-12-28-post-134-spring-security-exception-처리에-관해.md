@@ -6,7 +6,6 @@ categories: [Spring]
 slug: post-134-spring-security-exception-처리에-관해
 image: /images/134/img.png
 ---
-{% raw %}
 
 ![](/images/134/img.png)
 
@@ -41,4 +40,3 @@ jhkimmm.tistory.com](https://jhkimmm.tistory.com/29)
 TIL 40일차 개인프로젝트 globalExceptionhandler를 만들어보려고 한다. Controller를 작성할 때 예외상황을 고려하며 처리해야 하는 작업이 늘어남에 따라, 스프링 MVC에서는 @ExceptionHandler와 @ControllerAdvice
 
 w97ww.tistory.com](https://w97ww.tistory.com/74)
-{% endraw %}

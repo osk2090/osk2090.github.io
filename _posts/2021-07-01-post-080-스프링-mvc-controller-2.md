@@ -6,7 +6,6 @@ categories: [Spring]
 slug: post-080-스프링-mvc-controller-2
 image: /images/80/img.png
 ---
-{% raw %}
 
 ### Model이라는 데이터 전달자
 
@@ -163,4 +162,3 @@ RedirectAttribute는 Model과 같이 파라미터로 선언해서 사용하고
 addFlashAttribute(이름,값) 메서드를 이용해서 화면에 한 번만 사용하고
 
 다음에는 사용되지 않는 데이터를 전달하기 위해서 사용한다.
-{% endraw %}

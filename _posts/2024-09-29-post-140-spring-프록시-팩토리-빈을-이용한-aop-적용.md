@@ -6,7 +6,6 @@ categories: [Spring]
 slug: post-140-spring-프록시-팩토리-빈을-이용한-aop-적용
 image: /images/140/img.png
 ---
-{% raw %}
 
 먼저 예시코드를 보고 진행해보자.
 
@@ -71,4 +70,3 @@ void proxyFactoryBeanDifferentMethodName() {
 ```
 
 위의 코드를 돌려보면 sayThankYou 메서드에만 포인트컷을 적용시켰기때문에 첫번째 테스트는 변환되지 않았기 때문에 실패를 하게 된다.
-{% endraw %}

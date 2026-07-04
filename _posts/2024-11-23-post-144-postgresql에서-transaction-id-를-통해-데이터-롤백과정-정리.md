@@ -5,7 +5,6 @@ date: 2024-11-23 16:13:58 +0900
 categories: [Database]
 slug: post-144-postgresql에서-transaction-id-를-통해-데이터-롤백과정-정리
 ---
-{% raw %}
 
 1. 예시의 데이터로 tmin=1, value="one"데이터가 트랜잭션으로 수정이 발생하면
 2. 물리적으로 새 로우가 생성되고 tmin=2, tmax=null, value="two" 상태로 생성
@@ -116,4 +115,3 @@ SELECT value FROM test_table;
 -- 예상 결과:
 -- "four" (트랜잭션 완료 후 변경 데이터 반환)
 ```
-{% endraw %}

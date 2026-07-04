@@ -6,7 +6,6 @@ categories: [Spring]
 slug: post-082-스프링-mvc-controller-4
 image: /images/82/img.png
 ---
-{% raw %}
 
 ### Controller의 Exception 처리
 
@@ -184,4 +183,3 @@ http://localhost:8080/controller_war_exploded/e
 ![](/images/82/img_1.png)
 
 jsp에서 작성한 내용이 출력되는 것을 알 수 있다.
-{% endraw %}
