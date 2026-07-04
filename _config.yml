@@ -5,7 +5,7 @@ url: "https://blog.nebulix.io"
 baseurl: ""
 
 # Remote Theme configuration (required for GitHub Pages)
-remote_theme: kitian616/jekyll-theme-TeXt
+remote_theme: kitian616/jekyll-TeXt-theme
 
 # Plugins
 plugins:
