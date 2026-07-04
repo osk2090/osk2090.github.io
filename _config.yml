@@ -1,31 +1,6 @@
-# Site settings
+theme: jekyll-theme-cayman
 title: "문어발 개발자 오은석의 DevLog"
 description: "자바, 스프링, 데이터베이스부터 쿠버네티스까지 — 견고한 백엔드 시스템 구축을 위한 배움과 경험의 기록입니다."
 url: "https://blog.nebulix.io"
-baseurl: ""
-
-# Remote Theme configuration (required for GitHub Pages)
-remote_theme: kitian616/jekyll-theme-TeXt
-
-# Plugins
 plugins:
   - jekyll-sitemap
-  - jekyll-remote-theme
-
-# TeXt Theme specific settings
-text_skin: default # default, dark, forest, ocean, chocolate, orange
-highlight_theme: tomorrow # code block highlight theme
-author:
-  name: "오은석"
-  email: "osk2090@naver.com"
-  bio: "견고한 백엔드 시스템 구축을 갈망하는 주니어 개발자 버즈입니다."
-
-# Pagination (Jekyll Paginate is supported by TeXt Theme)
-paginate: 8
-paginate_path: "/page:num/"
-
-# Markdown processor
-markdown: kramdown
-kramdown:
-  input: GFM
-  syntax_highlighter: rouge
