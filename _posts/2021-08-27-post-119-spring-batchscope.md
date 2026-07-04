@@ -57,7 +57,7 @@ public FlatFileItemReader<Person> reader(
 
 그렇다면 어떻게 스프링은 애플리케이션 실행 시점에 파라미터가 없는데도 에러를 내지 않고 컴포넌트 빈을 주입받아 등록할 수 있을까요? 바로 **프록시(Proxy)** 기술 덕분입니다.
 
-```text
+```
 [애플리케이션 구동 시점]
 Spring Container ──> Proxy 객체 등록 (실제 Reader는 생성되지 않음)
 
