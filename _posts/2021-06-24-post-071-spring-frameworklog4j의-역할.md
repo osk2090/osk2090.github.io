@@ -4,6 +4,7 @@ title: "[Spring Framework]Log4j의 역할"
 date: 2021-06-24 08:40:08 +0900
 categories: [Spring]
 slug: post-071-spring-frameworklog4j의-역할
+published: false
 ---
 {% raw %}
 
