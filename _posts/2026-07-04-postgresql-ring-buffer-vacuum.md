@@ -1,10 +1,9 @@
 ---
 layout: default
-title: "P 전략"
+title: "PostgreSQL의 대량 데이터 처리: 링 버퍼(Ring Buffer)와 VACUUM 동작 분석"
 date: 2026-07-04 15:09:09 +0900
 categories: [Database]
-slug: p-전략
-
+slug: postgresql-ring-buffer-vacuum
 ---
 
 {% raw %}
