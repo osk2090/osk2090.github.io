@@ -1,4 +1,5 @@
 ---
+published: false
 layout: default
 title: "PostgreSQL 대해"
 date: 2026-02-17 16:56:11 +0900

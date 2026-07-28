@@ -1,4 +1,5 @@
 ---
+published: false
 layout: default
 title: "Mysql(InnoDB)에서 Transaction ID 를 통해 데이터 롤백과정 정리"
 date: 2024-11-23 16:40:34 +0900

@@ -3,7 +3,7 @@ layout: default
 title: "[Design Pattern] 전략 패턴(Strategy Pattern)의 이해와 Spring DI 활용"
 date: 2021-08-11 09:07:37 +0900
 categories: [Design Pattern]
-slug: post-108-design-patternstrategy-pattern
+slug: strategy-pattern
 ---
 {% raw %}
 

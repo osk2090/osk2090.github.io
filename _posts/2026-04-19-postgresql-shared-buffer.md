@@ -3,7 +3,7 @@ layout: default
 title: "PostgreSQL Shared Buffer 메커니즘 분석"
 date: 2026-04-19 12:00:00 +0900
 categories: [Database]
-slug: post-154-postgresql-shared-buffer-영역
+slug: postgresql-shared-buffer-mechanism
 ---
 
 {% raw %}

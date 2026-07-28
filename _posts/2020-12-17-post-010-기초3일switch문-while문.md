@@ -1,4 +1,5 @@
 ---
+published: false
 layout: default
 title: "[기초3일]switch문/while문"
 date: 2020-12-17 01:03:37 +0900

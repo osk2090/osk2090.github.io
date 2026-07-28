@@ -3,7 +3,7 @@ layout: default
 title: "Quartz Job Scheduler의 아키텍처 및 Spring Boot 클러스터링(Clustering) 적용 가이드"
 date: 2021-08-23 16:32:11 +0900
 categories: [Etc]
-slug: post-115-quartz-job-scheduler
+slug: quartz-job-scheduler
 ---
 {% raw %}
 
