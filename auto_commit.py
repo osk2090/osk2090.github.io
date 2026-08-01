@@ -3,6 +3,7 @@ import subprocess
 import sys
 import os
 import re
+import shutil
 
 def run_cmd(cmd):
     """Run a shell command and return stdout string."""
@@ -16,23 +17,90 @@ def get_git_status():
         return []
     return [line for line in status_output.split("\n") if line.strip()]
 
-def get_post_title(filepath):
-    """Extract title from Jekyll post markdown front matter."""
+def get_post_info(filepath):
+    """Extract title and slug from Jekyll post markdown front matter."""
+    title = ""
+    slug = ""
     if not os.path.exists(filepath):
-        return ""
+        return title, slug
     try:
         with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
             content = f.read()
-        m = re.search(r'^title:\s*["\']?(.*?)["\']?\s*$', content, re.MULTILINE)
-        if m:
-            return m.group(1).strip()
+        tm = re.search(r'^title:\s*["\']?(.*?)["\']?\s*$', content, re.MULTILINE)
+        if tm:
+            title = tm.group(1).strip()
+        sm = re.search(r'^slug:\s*["\']?(.*?)["\']?\s*$', content, re.MULTILINE)
+        if sm:
+            slug = sm.group(1).strip()
     except Exception:
         pass
-    # Fallback to filename
-    basename = os.path.basename(filepath)
-    basename = re.sub(r"^\d{4}-\d{2}-\d{2}-", "", basename)
-    basename = re.sub(r"\.md$", "", basename)
-    return basename.replace("-", " ")
+
+    if not title:
+        basename = os.path.basename(filepath)
+        basename = re.sub(r"^\d{4}-\d{2}-\d{2}-", "", basename)
+        title = re.sub(r"\.md$", "", basename).replace("-", " ")
+    if not slug:
+        slug = re.sub(r"[^\w\-]", "", title.lower().replace(" ", "-"))
+        
+    return title, slug
+
+def auto_fix_local_images_in_posts():
+    """Scan all modified/untracked markdown posts and convert local Mac image paths to repo images."""
+    status_lines = get_git_status()
+    modified_posts = []
+    for line in status_lines:
+        filepath = line[3:].strip('"')
+        if filepath.startswith("_posts/") and filepath.endswith(".md"):
+            modified_posts.append(filepath)
+
+    if not modified_posts:
+        return
+
+    fixed_any = False
+    for post_path in modified_posts:
+        if not os.path.exists(post_path):
+            continue
+        with open(post_path, "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+
+        # Regex for local image paths (MarkText / desktop absolute paths)
+        # e.g., ![](file:///Users/...) or ![](/Users/...)
+        local_img_pattern = r'!\[(.*?)\]\(((?:file://)?/(?:Users|Users/.*?)/[^\)]+\.(?:png|jpg|jpeg|gif|webp))\)'
+        matches = re.findall(local_img_pattern, content, re.IGNORECASE)
+
+        if not matches:
+            continue
+
+        title, slug = get_post_info(post_path)
+        folder_name = slug if slug else "general"
+        target_dir = os.path.join("images", folder_name)
+        os.makedirs(target_dir, exist_ok=True)
+
+        print(f"\n📷 [{os.path.basename(post_path)}] 로컬 이미지 {len(matches)}개 자동 감지 및 레포지토리 복사 중...")
+
+        new_content = content
+        for idx, (alt, raw_src) in enumerate(matches, 1):
+            src_path = raw_src.replace("file://", "").replace("%20", " ")
+            if not os.path.exists(src_path):
+                print(f"  ⚠️  경고: local image missing: {src_path}")
+                continue
+
+            ext = os.path.splitext(src_path)[1].lower()
+            dest_filename = f"img_{idx}{ext}"
+            dest_path = os.path.join(target_dir, dest_filename)
+            shutil.copy2(src_path, dest_path)
+
+            web_url = f"/{target_dir}/{dest_filename}".replace("\\", "/")
+            new_content = new_content.replace(raw_src, web_url)
+            print(f"  ✓ {os.path.basename(src_path)} -> {web_url}")
+
+        if new_content != content:
+            with open(post_path, "w", encoding="utf-8") as f:
+                f.write(new_content)
+            fixed_any = True
+
+    if fixed_any:
+        print("✨ 모든 로컬 이미지 레포지토리 이전 및 마크다운 링크 자동 보정 완료!")
 
 def generate_commit_candidates(status_lines):
     """Generate 3 high quality commit message candidates based on git status."""
@@ -47,7 +115,7 @@ def generate_commit_candidates(status_lines):
         filepath = line[3:].strip('"')
 
         if filepath.startswith("_posts/"):
-            title = get_post_title(filepath)
+            title, _ = get_post_info(filepath)
             if "?" in code or "A" in code:
                 post_adds.append((filepath, title))
             else:
@@ -102,15 +170,19 @@ def generate_commit_candidates(status_lines):
 
 def main():
     print("\n=========================================")
-    print("🚀 Auto Git Commit & Push CLI")
-    print("=========================================\n")
+    print("🚀 Auto Git Commit & Push CLI (With Auto Image Fix)")
+    print("=========================================")
 
+    # Step 1: Auto detect & fix local mac image paths in posts
+    auto_fix_local_images_in_posts()
+
+    # Step 2: Read updated git status
     status_lines = get_git_status()
     if not status_lines:
-        print("✅ 변경된 파일이 없습니다. (Working tree clean)")
+        print("\n✅ 변경된 파일이 없습니다. (Working tree clean)")
         sys.exit(0)
 
-    print("📋 [현재 변경된 파일 목록]")
+    print("\n📋 [현재 변경된 파일 목록]")
     for line in status_lines:
         print(f"  {line}")
     print()
