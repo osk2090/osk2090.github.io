@@ -4,7 +4,6 @@ title: "pg_prewarm 사용하기"
 date: 2026-07-17 12:40:01 +0900
 categories: [Database]
 slug: pg_prewarm-사용하기
-
 ---
 
 {% raw %}
@@ -74,5 +73,71 @@ pg_prewarm.autoprewarm_interval = 300s -- 파일변경에 대한 시간간격 �
              ↓
           Worker 종료 → Master는 다시 주기적 저장 모드로
 ```
+
+autoprewarm.blocks 파일을 수동으로 변경하는 법이 있는데
+
+```
+select autoprewarm_dump_now();
+```
+
+![](/Users/osk2090/Library/Application%20Support/marktext/images/2026-08-01-11-03-41-image.png)
+
+위의 쿼리를 날리고 volumes로 지정된 디렉토리로 이동하면 아래와 같이 autoprewarm.blocks 파일이 생긴것을 볼 수 있다.
+
+![](/Users/osk2090/Library/Application%20Support/marktext/images/2026-08-01-11-08-04-image.png)
+
+해당 파일을 확인해보면
+
+![](/Users/osk2090/Library/Application%20Support/marktext/images/2026-08-01-11-27-43-image.png)
+
+사진과 같이 텍스트 형식으로 저장된다. 해당 데이터는 데이터베이스 id, 테이블 스페이스 id, 파일 id, 포크, 세그먼트 값들을 볼 수 있다.
+
+근데 나는 여기서 실제로 맵핑된 값인지 보고 싶어서 쿼리를 이용해서 실제 데이터인지 확인해봤다.
+
+(모자이크된 값들은 실제 내가 테스트하는 테이블이 아닌 pg에서 관리하는 데이터라서 포커스를 내가 만든 테이블을 위해 모자이크했다.)
+
+![](/Users/osk2090/Library/Application%20Support/marktext/images/2026-08-01-11-33-18-image.png)
+
+autoprewarm.blocks 파일에서 확인한 값과 위에서 쿼리로 확인한 값을 비교해보면
+
+데이터베이스 id, 테이블 스페이스 id값이 같은것을 보면 캐싱된 데이터를 백업하고 있는것을 알 수 있다.
+
+
+
+이제 auto prewarm이 적용되는지 테스트를 시작하기 전에 db를 재시작하여 shared-buffer영역이 초기화 되었는지 확인한다.
+
+![](/Users/osk2090/Library/Application%20Support/marktext/images/2026-08-01-12-26-46-image.png)
+
+
+
+volumes로 지정된 디렉토리로 이동해서 postgresql.conf 파일중에서 아래 키값들을 추가한다.
+
+![](/Users/osk2090/Library/Application%20Support/marktext/images/2026-08-01-12-31-46-image.png)
+
+첫째줄 주석과 같이 해당 키값이 변경되면 재시작이 필요하다고 써있다.
+
+
+
+다시 db를 재시작하면 autoprewarm.blocks 파일이 생성된 것을 확인할 수 있다. 근데 나는 위에서 먼저 테스트 했기 때문에 해당 파일이 이전에 생성되었을 것이다.
+
+
+
+![](/Users/osk2090/Library/Application%20Support/marktext/images/2026-08-01-12-48-30-image.png)
+
+위의 쿼리를 날렸을때 결과를 보면 디스크에서 데이터들을 읽었음을 알 수 있다.
+
+
+
+![](/Users/osk2090/Library/Application%20Support/marktext/images/2026-08-01-12-50-25-image.png)
+
+해당 쿼리를 날려서 autoprewarm.blocks 파일을 수동으로 업데이트 했다.
+
+
+
+![](/Users/osk2090/Library/Application%20Support/marktext/images/2026-08-01-12-54-37-image.png)
+
+db를 재시작하고 캐싱된 데이터 갯수를 조회했는데 결과를 보면 직접 캐싱하지 않아도 서버가 재시작되면 자동으로 캐싱되는것을 알 수 있다.
+
+
 
 {% endraw %}
