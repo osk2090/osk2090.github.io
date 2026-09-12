@@ -78,21 +78,30 @@ def auto_fix_local_images_in_posts():
 
         print(f"\n📷 [{os.path.basename(post_path)}] 로컬 이미지 {len(matches)}개 자동 감지 및 레포지토리 복사 중...")
 
+        existing_indices = []
+        if os.path.exists(target_dir):
+            for fname in os.listdir(target_dir):
+                m = re.match(r"^img_(\d+)\.", fname)
+                if m:
+                    existing_indices.append(int(m.group(1)))
+        next_idx = max(existing_indices, default=0) + 1
+
         new_content = content
-        for idx, (alt, raw_src) in enumerate(matches, 1):
+        for alt, raw_src in matches:
             src_path = raw_src.replace("file://", "").replace("%20", " ")
             if not os.path.exists(src_path):
                 print(f"  ⚠️  경고: local image missing: {src_path}")
                 continue
 
             ext = os.path.splitext(src_path)[1].lower()
-            dest_filename = f"img_{idx}{ext}"
+            dest_filename = f"img_{next_idx}{ext}"
             dest_path = os.path.join(target_dir, dest_filename)
             shutil.copy2(src_path, dest_path)
 
             web_url = f"/{target_dir}/{dest_filename}".replace("\\", "/")
             new_content = new_content.replace(raw_src, web_url)
             print(f"  ✓ {os.path.basename(src_path)} -> {web_url}")
+            next_idx += 1
 
         if new_content != content:
             with open(post_path, "w", encoding="utf-8") as f:

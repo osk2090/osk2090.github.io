@@ -1,0 +1,42 @@
+name: Purge Cloudflare cache
+
+# GitHub Pages 배포가 성공하면 Cloudflare 엣지 캐시를 비워
+# 수정한 글이 즉시 반영되게 한다. 수동 실행도 가능.
+on:
+  deployment_status:
+  workflow_dispatch:
+
+jobs:
+  purge:
+    # Pages 배포 성공 시에만 (수동 실행은 항상 통과)
+    if: github.event_name == 'workflow_dispatch' || github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    env:
+      CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+    steps:
+      # secrets 컨텍스트는 if에서 쓸 수 없으므로 env 로 옮겨 검사한다.
+      - name: Skip when secrets are not configured
+        if: env.CF_API_TOKEN == '' || env.CF_ZONE_ID == ''
+        run: |
+          echo "::notice::CLOUDFLARE_API_TOKEN / CLOUDFLARE_ZONE_ID 미설정 — purge 를 건너뜁니다."
+
+      - name: Purge everything
+        if: env.CF_API_TOKEN != '' && env.CF_ZONE_ID != ''
+        run: |
+          set -euo pipefail
+          response=$(curl -sS -w '\n%{http_code}' -X POST \
+            "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache" \
+            -H "Authorization: Bearer ${CF_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}')
+
+          status=$(printf '%s' "$response" | tail -n1)
+          body=$(printf '%s' "$response" | sed '$d')
+          echo "HTTP ${status}"
+          echo "$body"
+
+          if [ "$status" != "200" ]; then
+            echo "::error::Cloudflare purge 실패 (HTTP ${status})"
+            exit 1
+          fi
