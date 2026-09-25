@@ -11,11 +11,21 @@ def run_cmd(cmd):
     return result.stdout.strip()
 
 def get_git_status():
-    """Get status lines from git status -s."""
-    status_output = run_cmd("git -c core.quotepath=false status -s")
-    if not status_output:
+    """Get status lines from git status -s preserving line formatting."""
+    result = subprocess.run("git -c core.quotepath=false status -s", shell=True, capture_output=True, text=True)
+    if not result.stdout:
         return []
-    return [line for line in status_output.split("\n") if line.strip()]
+    return [line for line in result.stdout.splitlines() if line.strip()]
+
+def parse_git_status_line(line):
+    """Parse git status -s line into (code, filepath)."""
+    code = line[:2].strip()
+    raw_path = line[2:].strip()
+    if raw_path.startswith('"') and raw_path.endswith('"'):
+        raw_path = raw_path[1:-1]
+    if " -> " in raw_path:
+        raw_path = raw_path.split(" -> ")[-1].strip('"')
+    return code, raw_path
 
 def get_post_info(filepath):
     """Extract title and slug from Jekyll post markdown front matter."""
@@ -49,7 +59,7 @@ def auto_fix_local_images_in_posts():
     status_lines = get_git_status()
     modified_posts = []
     for line in status_lines:
-        filepath = line[3:].strip('"')
+        code, filepath = parse_git_status_line(line)
         if filepath.startswith("_posts/") and filepath.endswith(".md"):
             modified_posts.append(filepath)
 
@@ -120,8 +130,7 @@ def generate_commit_candidates(status_lines):
     other_files = []
 
     for line in status_lines:
-        code = line[:2].strip()
-        filepath = line[3:].strip('"')
+        code, filepath = parse_git_status_line(line)
 
         if filepath.startswith("_posts/"):
             title, _ = get_post_info(filepath)
