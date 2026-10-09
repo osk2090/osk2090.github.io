@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "postgresql-wal-4-record"
+title: "PostgreSQL WAL (4) WAL 레코드 내부 구조 분석"
 date: 2026-10-09 14:24:21 +0900
 categories: [Database]
 slug: postgresql-wal-4-record
