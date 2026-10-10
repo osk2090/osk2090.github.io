@@ -46,9 +46,9 @@ CRUD가 발생하면 먼저 WAL 버퍼에 기록된다. 변경된 내용은 즉�
 
 아래 인터랙티브 시뮬레이션을 통해 트랜잭션 수행부터 커밋, 체크포인트까지 WAL 버퍼와 디스크의 변화 과정을 단계별로 직접 확인해보실 수 있습니다.
 
-<iframe src="/assets/html/insert-commit-checkpoint-simulation.html?v=2" width="100%" height="820px" style="border: 1px solid #cfd9de; border-radius: 12px; margin: 20px 0; background: #fff;" loading="lazy"></iframe>
+<iframe src="/assets/html/insert-commit-checkpoint-simulation.html?v=3" width="100%" height="820px" style="border: 1px solid #cfd9de; border-radius: 12px; margin: 20px 0; background: #fff;" loading="lazy"></iframe>
 
-> 🔗 화면이 작거나 잘 보이지 않는다면 [새 탭에서 전체 화면으로 보기](/assets/html/insert-commit-checkpoint-simulation.html?v=2){:target="_blank"}를 클릭해 주세요.
+> 🔗 화면이 작거나 잘 보이지 않는다면 [새 탭에서 전체 화면으로 보기](/assets/html/insert-commit-checkpoint-simulation.html?v=3){:target="_blank"}를 클릭해 주세요.
 
 {% endraw %}
 

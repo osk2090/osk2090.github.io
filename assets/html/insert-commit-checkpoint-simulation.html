@@ -3,9 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <title>INSERT → COMMIT → 체크포인트 단계별 시뮬레이션</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -104,7 +101,7 @@ button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
 <body>
 <main>
   <h1>INSERT → COMMIT → 체크포인트, 한 단계씩 눌러보기</h1>
-  <p class="lead">전체 동작 과정을 단계별로 쪼갰어요. 다음 버튼(또는 키보드 ← →)으로 넘기면서 어느 영역에 무엇이 생기고 바뀌는지 보세요. 각 단계에서 "지금 서버가 죽으면?"도 눌러볼 수 있습니다.</p>
+  <p class="lead">INSERT, COMMIT, 체크포인트가 진행되는 순서를 단계별로 쪼갰어요. 다음 버튼(또는 키보드 ← →)으로 넘기면서 어느 영역에 무엇이 생기고 바뀌는지 보세요. 각 단계에서 "지금 서버가 죽으면?"도 눌러볼 수 있습니다.</p>
 
   <ol class="steps" id="stepList" aria-label="단계 목록"></ol>
 
@@ -139,7 +136,7 @@ button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
   ];
 
   function page(lsn, tuple, dirty){
-    return '<div class="chip page'+(dirty?' dirtyc':'')+'"><span>T1 페이지</span><span>LSN_'+lsn+'</span><span>'+(tuple?'튜플 "A"':'비어 있음')+'</span>'+(dirty?'<em>dirty</em>':'')+'</div>';
+    return '<div class="chip page'+(dirty?' dirtyc':'')+'"><span>fruit 페이지</span><span>LSN_'+lsn+'</span><span>'+(tuple?'튜플 "사과"':'비어 있음')+'</span>'+(dirty?'<em>dirty</em>':'')+'</div>';
   }
   function rec(t, isNew){ return '<div class="chip rec'+(isNew?' new':'')+'">'+t+'</div>'; }
   function mark(){ return '<div class="chip mark">Redo 포인트 ▸</div>'; }
@@ -151,7 +148,7 @@ button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
     {
       t:"시작 상태",
       sql:"-- 아직 아무 SQL도 실행하지 않음",
-      what:"<p>디스크의 T1 테이블 페이지는 비어 있고 LSN은 0입니다. 메모리 영역(Shared Buffer, WAL Buffer)도 비어 있어요.</p><p><code>pg_control</code>에는 지난 체크포인트가 남긴 Redo 포인트(LSN_0)가 적혀 있습니다.</p>",
+      what:"<p>디스크의 fruit 테이블 페이지는 비어 있고 LSN은 0입니다. 메모리 영역(Shared Buffer, WAL Buffer)도 비어 있어요.</p><p><code>pg_control</code>에는 지난 체크포인트가 남긴 Redo 포인트(LSN_0)가 적혀 있습니다.</p>",
       why:"이 상태가 \"모든 변경이 디스크에 반영된 깨끗한 상태\"예요. 여기서 출발합니다.",
       hot:[],
       s:{shared:[], walbuf:[], walseg:[OLDCP], disk:[page(0,false,false)], ctl:[ctl('Redo 포인트 = LSN_0')]},
@@ -159,57 +156,57 @@ button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
     },
     {
       t:"① 페이지를 메모리로 읽어 온다",
-      sql:"BEGIN;\nINSERT INTO t1 VALUES ('A');",
-      what:"<p>T1 테이블의 페이지가 Shared Buffer에 없어서, 디스크에서 <b>복사해서 읽어 옵니다.</b> 이때 LSN은 아직 0이에요.</p><p>디스크의 원본 페이지는 그대로 있습니다. 읽어 오기만 한 거예요.</p>",
+      sql:"BEGIN;\nINSERT INTO fruit VALUES ('사과');",
+      what:"<p>fruit 테이블의 페이지가 Shared Buffer에 없어서, 디스크에서 <b>복사해서 읽어 옵니다.</b> 이때 LSN은 아직 0이에요.</p><p>디스크의 원본 페이지는 그대로 있습니다. 읽어 오기만 한 거예요.</p>",
       why:"PostgreSQL은 데이터를 디스크에서 직접 고치지 않고, 항상 메모리로 올려서 고칩니다.",
       hot:["shared","disk"],
       s:{shared:[page(0,false,false)], walbuf:[], walseg:[OLDCP], disk:[page(0,false,false)], ctl:[ctl('Redo 포인트 = LSN_0')]},
       crash:["아무 문제 없어요.","메모리에 읽기만 했고 아무것도 바꾸지 않았습니다."]
     },
     {
-      t:"② 튜플 A를 넣고, WAL 레코드를 만든다",
-      sql:"BEGIN;\nINSERT INTO t1 VALUES ('A');   -- 실행됨",
-      what:"<ul><li>메모리의 페이지에 튜플 \"A\"를 저장 → 페이지가 <b>dirty</b>가 됩니다.</li><li>같은 변경을 설명하는 <b>WAL 레코드</b>(INSERT A)를 WAL Buffer에 기록합니다.</li><li>페이지의 LSN이 0에서 1로 바뀝니다. \"이 페이지는 LSN_1 레코드까지 반영됨\"이라는 표시예요.</li></ul>",
+      t:"② 튜플 사과를 넣고, WAL 레코드를 만든다",
+      sql:"BEGIN;\nINSERT INTO fruit VALUES ('사과');   -- 실행됨",
+      what:"<ul><li>메모리의 페이지에 튜플 \"사과\"를 저장 → 페이지가 <b>dirty</b>가 됩니다.</li><li>같은 변경을 설명하는 <b>WAL 레코드</b>(INSERT 사과)를 WAL Buffer에 기록합니다.</li><li>페이지의 LSN이 0에서 1로 바뀝니다. \"이 페이지는 LSN_1 레코드까지 반영됨\"이라는 표시예요.</li></ul>",
       why:"디스크에는 아직 아무것도 안 갔어요. 데이터 파일도, WAL 파일도 그대로입니다. 전부 메모리에만 있어요.",
       hot:["shared","walbuf"],
-      s:{shared:[page(1,true,true)], walbuf:[rec('INSERT A @LSN_1',true)], walseg:[OLDCP], disk:[page(0,false,false)], ctl:[ctl('Redo 포인트 = LSN_0')]},
-      crash:["A가 사라져요. 그런데 정상이에요.","INSERT는 커밋 전이었고 WAL이 디스크에 없으므로 A는 없던 일이 됩니다. 사용자도 아직 \"커밋 완료\"를 받지 못했으니 약속을 어긴 게 아니에요."]
+      s:{shared:[page(1,true,true)], walbuf:[rec('INSERT 사과 @LSN_1',true)], walseg:[OLDCP], disk:[page(0,false,false)], ctl:[ctl('Redo 포인트 = LSN_0')]},
+      crash:["사과가 사라져요. 그런데 정상이에요.","INSERT는 커밋 전이었고 WAL이 디스크에 없으므로 사과는 없던 일이 됩니다. 사용자도 아직 \"커밋 완료\"를 받지 못했으니 약속을 어긴 게 아니에요."]
     },
     {
       t:"③ COMMIT: 커밋 레코드를 만든다",
       sql:"COMMIT;",
-      what:"<ul><li>트랜잭션이 잡고 있던 <b>잠금이 해제</b>되어 다른 트랜잭션이 A를 볼 수 있게 됩니다.</li><li><b>커밋 레코드</b>를 WAL Buffer에 추가합니다.</li></ul><p>아직 사용자에게 \"커밋 완료\"라고 답하기 전이에요.</p>",
+      what:"<ul><li>트랜잭션이 잡고 있던 <b>잠금이 해제</b>되어 다른 트랜잭션이 사과를 볼 수 있게 됩니다.</li><li><b>커밋 레코드</b>를 WAL Buffer에 추가합니다.</li></ul><p>아직 사용자에게 \"커밋 완료\"라고 답하기 전이에요.</p>",
       why:"커밋 레코드까지 WAL Buffer에 있을 뿐, 디스크에는 아직 없습니다. 바로 다음 단계에서 내려가요.",
       hot:["walbuf"],
-      s:{shared:[page(1,true,true)], walbuf:[rec('INSERT A @LSN_1'), rec('COMMIT',true)], walseg:[OLDCP], disk:[page(0,false,false)], ctl:[ctl('Redo 포인트 = LSN_0')]},
-      crash:["A가 사라져요. 아직은 정상이에요.","커밋 레코드가 메모리(WAL Buffer)에만 있고, 사용자에게 \"커밋 완료\" 응답도 가기 전이라서 일관성이 깨지지 않습니다."]
+      s:{shared:[page(1,true,true)], walbuf:[rec('INSERT 사과 @LSN_1'), rec('COMMIT',true)], walseg:[OLDCP], disk:[page(0,false,false)], ctl:[ctl('Redo 포인트 = LSN_0')]},
+      crash:["사과가 사라져요. 아직은 정상이에요.","커밋 레코드가 메모리(WAL Buffer)에만 있고, 사용자에게 \"커밋 완료\" 응답도 가기 전이라서 일관성이 깨지지 않습니다."]
     },
     {
       t:"④ WAL Buffer를 WAL 파일로 flush한다",
       sql:"COMMIT;   -- flush 완료 후 \"COMMIT\" 응답",
-      what:"<p>WAL Buffer의 <b>INSERT A와 COMMIT 레코드가 WAL Segment 파일로 flush</b>됩니다. 이게 끝나야 사용자에게 \"커밋 완료\"를 응답해요.</p><p>하지만 <b>데이터 파일(Database Cluster)은 아직 LSN_0, 비어 있는 그대로</b>입니다. Dirty 페이지는 메모리에만 있어요.</p>",
-      why:"WAL Buffer의 A/commit 레코드가 아래 WAL Segment로 안전하게 내려가는 단계입니다. \"커밋한 데이터는 잃지 않는다\"가 여기서 보장돼요.",
+      what:"<p>WAL Buffer의 <b>INSERT 사과 레코드와 COMMIT 레코드가 WAL Segment 파일로 flush</b>됩니다. 이게 끝나야 사용자에게 \"커밋 완료\"를 응답해요.</p><p>하지만 <b>데이터 파일(Database Cluster)은 아직 LSN_0, 비어 있는 그대로</b>입니다. Dirty 페이지는 메모리에만 있어요.</p>",
+      why:"WAL Buffer의 사과/commit이 WAL Segment로 내려가는 게 바로 이 단계입니다. \"커밋한 데이터는 잃지 않는다\"가 여기서 보장돼요.",
       hot:["walbuf","walseg"],
-      s:{shared:[page(1,true,true)], walbuf:[], walseg:[OLDCP, rec('INSERT A @LSN_1',true), rec('COMMIT',true)], disk:[page(0,false,false)], ctl:[ctl('Redo 포인트 = LSN_0')]},
-      crash:["A는 안전해요. 복구 때 되살아납니다.","데이터 파일에는 A가 없지만 WAL에 INSERT A와 COMMIT이 있어요. 재시작하면 pg_control의 Redo 포인트(LSN_0)부터 WAL을 읽어 A를 다시 넣습니다. 커밋된 데이터를 잃지 않아요."]
+      s:{shared:[page(1,true,true)], walbuf:[], walseg:[OLDCP, rec('INSERT 사과 @LSN_1',true), rec('COMMIT',true)], disk:[page(0,false,false)], ctl:[ctl('Redo 포인트 = LSN_0')]},
+      crash:["사과는 안전해요. 복구 때 되살아납니다.","데이터 파일에는 사과가 없지만 WAL에 INSERT 사과와 COMMIT이 있어요. 재시작하면 pg_control의 Redo 포인트(LSN_0)부터 WAL을 읽어 사과를 다시 넣습니다. 커밋된 데이터를 잃지 않아요."]
     },
     {
       t:"⑤ 체크포인트 시작",
       sql:"-- 백그라운드에서 체크포인트 시작 (자동 또는 CHECKPOINT;)",
       what:"<ul><li>현재 WAL 위치를 <b>새 Redo 포인트 후보</b>로 기록해 둡니다.</li><li>Shared Buffer의 dirty 페이지들에 \"이번에 디스크로 보낼 대상\" 표식을 붙입니다.</li></ul><p><code>pg_control</code>은 아직 <b>예전 값(LSN_0)</b> 그대로예요.</p>",
-      why:"참고: 실제로는 Redo 위치만 시작 시점에 정해 두고, 체크포인트 완료 레코드는 dirty 페이지의 flush가 끝난 뒤에 WAL에 최종 기록합니다.",
+      why:"Redo 위치는 시작 때 정해 두지만, 체크포인트 완료 레코드는 flush가 모두 끝난 뒤에 WAL에 기록됩니다.",
       hot:["walseg"],
-      s:{shared:[page(1,true,true)], walbuf:[], walseg:[OLDCP, rec('INSERT A @LSN_1'), rec('COMMIT'), mark()], disk:[page(0,false,false)], ctl:[ctl('Redo 포인트 = LSN_0 (아직 예전 값)')]},
-      crash:["A는 안전해요. 복구도 이전과 같아요.","체크포인트가 끝나지 않았으니 pg_control은 여전히 LSN_0을 가리킵니다. 미완성 체크포인트는 무시하고 LSN_0부터 WAL을 다시 적용해 A를 복원해요."]
+      s:{shared:[page(1,true,true)], walbuf:[], walseg:[OLDCP, rec('INSERT 사과 @LSN_1'), rec('COMMIT'), mark()], disk:[page(0,false,false)], ctl:[ctl('Redo 포인트 = LSN_0 (아직 예전 값)')]},
+      crash:["사과는 안전해요. 복구도 이전과 같아요.","체크포인트가 끝나지 않았으니 pg_control은 여전히 LSN_0을 가리킵니다. 미완성 체크포인트는 무시하고 LSN_0부터 WAL을 다시 적용해 사과를 복원해요."]
     },
     {
       t:"⑥ Dirty 페이지를 데이터 파일로 flush",
       sql:"-- 체크포인트 진행 중: dirty 페이지 → 디스크",
-      what:"<p>표식이 붙은 dirty 페이지가 <b>디스크의 데이터 파일로 기록</b>됩니다. 이제 디스크의 T1 페이지도 LSN_1, 튜플 A를 가집니다.</p><p>메모리의 페이지는 <b>삭제되지 않고 그대로 남아</b> 있어요. 다만 더 이상 dirty가 아니라 \"디스크와 같은 상태\"가 됩니다.</p>",
-      why:"체크포인트는 WAL을 읽는 작업이 아니라, 메모리의 dirty 페이지를 디스크로 내리는(Flush) 작업이에요.",
+      what:"<p>표식이 붙은 dirty 페이지가 <b>디스크의 데이터 파일로 기록</b>됩니다. 이제 디스크의 fruit 페이지도 LSN_1, 튜플 사과를 가집니다.</p><p>메모리의 페이지는 <b>삭제되지 않고 그대로 남아</b> 있어요. 다만 더 이상 dirty가 아니라 \"디스크와 같은 상태\"가 됩니다.</p>",
+      why:"체크포인트는 WAL을 읽는 작업이 아니라, 메모리의 dirty 페이지를 디스크로 내리는 작업이에요. Flush가 바로 이 단계입니다.",
       hot:["shared","disk"],
-      s:{shared:[page(1,true,false)], walbuf:[], walseg:[OLDCP, rec('INSERT A @LSN_1'), rec('COMMIT'), mark()], disk:[page(1,true,false)], ctl:[ctl('Redo 포인트 = LSN_0 (아직 예전 값)')]},
-      crash:["A는 안전해요. 이미 데이터 파일에도 있어요.","pg_control은 아직 LSN_0이라서 WAL을 LSN_0부터 다시 읽지만, 페이지의 LSN(LSN_1)이 이미 그 레코드 이상이므로 \"이미 반영됨\"으로 보고 건너뜁니다."]
+      s:{shared:[page(1,true,false)], walbuf:[], walseg:[OLDCP, rec('INSERT 사과 @LSN_1'), rec('COMMIT'), mark()], disk:[page(1,true,false)], ctl:[ctl('Redo 포인트 = LSN_0 (아직 예전 값)')]},
+      crash:["사과는 안전해요. 이미 데이터 파일에도 있어요.","pg_control은 아직 LSN_0이라서 WAL을 LSN_0부터 다시 읽지만, 페이지의 LSN(LSN_1)이 이미 그 레코드 이상이므로 \"이미 반영됨\"으로 보고 건너뜁니다."]
     },
     {
       t:"⑦ 체크포인트 종료",
@@ -217,8 +214,8 @@ button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
       what:"<ul><li>체크포인트 완료 레코드를 WAL에 기록합니다.</li><li><code>pg_control</code>의 Redo 포인트를 <b>새 위치로 갱신</b>합니다.</li></ul><p>이제 \"이 위치 이전의 변경은 모두 데이터 파일에 반영됐다\"는 기준점이 확정됐어요.</p>",
       why:"pg_control 갱신은 항상 맨 마지막이에요. 모든 flush가 끝나기 전에 기준점을 앞으로 옮기면 안 되기 때문입니다. 이제 이 위치 이전의 WAL 세그먼트는 재활용하거나 아카이브할 수 있어요.",
       hot:["walseg","ctl"],
-      s:{shared:[page(1,true,false)], walbuf:[], walseg:[OLDCP, rec('INSERT A @LSN_1'), rec('COMMIT'), mark(), rec('CHECKPOINT (완료)',true)], disk:[page(1,true,false)], ctl:[ctl('Redo 포인트 = LSN_1 이후 (갱신됨)')]},
-      crash:["A는 안전하고, 복구도 빨라요.","pg_control이 새 Redo 포인트를 가리키므로 그 이후의 WAL만 읽으면 됩니다. 앞의 INSERT A, COMMIT은 이미 데이터 파일에 반영됐으니 다시 볼 필요가 없어요."]
+      s:{shared:[page(1,true,false)], walbuf:[], walseg:[OLDCP, rec('INSERT 사과 @LSN_1'), rec('COMMIT'), mark(), rec('CHECKPOINT (완료)',true)], disk:[page(1,true,false)], ctl:[ctl('Redo 포인트 = LSN_1 이후 (갱신됨)')]},
+      crash:["사과는 안전하고, 복구도 빨라요.","pg_control이 새 Redo 포인트를 가리키므로 그 이후의 WAL만 읽으면 됩니다. 앞의 INSERT 사과, COMMIT은 이미 데이터 파일에 반영됐으니 다시 볼 필요가 없어요."]
     }
   ];
 

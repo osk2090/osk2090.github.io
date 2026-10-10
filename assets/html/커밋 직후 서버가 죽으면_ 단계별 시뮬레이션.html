@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>커밋 직후 서버가 죽으면? 단계별 시뮬레이션</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#eef2f4; --surface:#ffffff; --ink:#14232b; --muted:#5a6b75; --line:#cfd9de;
+  --accent:#0b6e78; --mem:#e0a526; --disk:#0b6e78; --dirty:#c8452d;
+  --hot:#0b6e78; --code-bg:#13242c; --code-ink:#dbe8ec;
+  --crash-bg:#fdeae5; --crash-ink:#7a2412;
+  --sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1a20; --surface:#16252d; --ink:#e4eef2; --muted:#93a7b0; --line:#2a3d47;
+    --accent:#4cc3cf; --mem:#f0b73a; --disk:#4cc3cf; --dirty:#ff8a6b; --hot:#4cc3cf;
+    --code-bg:#0a1318; --code-ink:#d4e4e9; --crash-bg:#3b1f18; --crash-ink:#ffc2b3;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1a20; --surface:#16252d; --ink:#e4eef2; --muted:#93a7b0; --line:#2a3d47;
+  --accent:#4cc3cf; --mem:#f0b73a; --disk:#4cc3cf; --dirty:#ff8a6b; --hot:#4cc3cf;
+  --code-bg:#0a1318; --code-ink:#d4e4e9; --crash-bg:#3b1f18; --crash-ink:#ffc2b3;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;font-size:16px;-webkit-text-size-adjust:100%}
+main{max-width:820px;margin:0 auto;padding:36px 16px 80px}
+h1{font-size:clamp(24px,5vw,32px);line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+.lead{color:var(--muted);margin:0 0 24px}
+code{font-family:var(--mono);font-size:.88em;background:color-mix(in srgb,var(--accent) 12%,transparent);padding:1px 6px;border-radius:4px}
+
+.steps{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 6px;padding:0;list-style:none}
+.steps button{min-width:40px;height:40px;padding:0 10px;border-radius:20px;font-weight:600}
+.steps button[aria-current="step"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.steps button.done{border-color:var(--accent);color:var(--accent)}
+.steps li.gap{width:14px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .steps button[aria-current="step"]{color:#06181c}}
+:root[data-theme="dark"] .steps button[aria-current="step"]{color:#06181c}
+.phase{font-size:13px;color:var(--muted);margin:0 0 14px}
+
+button{font-family:var(--sans);font-size:15px;font-weight:500;padding:9px 16px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;min-height:42px}
+button:hover:not(:disabled){border-color:var(--accent)}
+button:disabled{opacity:.4;cursor:default}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) button.primary{color:#06181c}}
+:root[data-theme="dark"] button.primary{color:#06181c}
+
+.sql{background:var(--code-bg);color:var(--code-ink);font-family:var(--mono);font-size:14px;padding:12px 16px;border-radius:8px;margin:0 0 14px;overflow-x:auto;white-space:pre}
+
+.board{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.board.crashed{border-color:var(--dirty)}
+.lane{display:grid;grid-template-columns:150px 1fr;border-top:1px solid var(--line);min-height:76px;position:relative}
+.lane:first-child{border-top:0}
+.lane.firstdisk{border-top:2px dashed var(--muted)}
+.lane .lab{padding:10px 12px;border-left:5px solid var(--mem);font-weight:600;font-size:14px;line-height:1.35}
+.lane.disk .lab{border-left-color:var(--disk)}
+.lane .lab small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.lane .body{padding:10px 12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.lane.hot{background:color-mix(in srgb,var(--hot) 9%,transparent);box-shadow:inset 0 0 0 2px var(--hot)}
+.empty{color:var(--muted);font-size:13px}
+
+.chip{border-radius:8px;padding:6px 10px;font-size:13px;line-height:1.35;animation:pop .35s ease}
+.chip.page{display:flex;flex-direction:column;border:2px solid var(--mem);background:color-mix(in srgb,var(--mem) 14%,transparent);min-width:120px}
+.lane.disk .chip.page{border-color:var(--disk);background:color-mix(in srgb,var(--disk) 12%,transparent)}
+.chip.page span:first-child{font-weight:600}
+.chip.page.dirtyc{border-color:var(--dirty)}
+.chip.page.lost{border:2px dashed var(--dirty);background:transparent;color:var(--muted);text-decoration:line-through}
+.chip.page em{font-style:normal;color:var(--dirty);font-weight:700;font-size:12px}
+.chip.rec{font-family:var(--mono);border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 6%,transparent)}
+.chip.rec.new{border-color:var(--accent)}
+.chip.rec.skip{opacity:.5;text-decoration:line-through}
+.chip.rec.lost{border:1px dashed var(--dirty);background:transparent;color:var(--muted);text-decoration:line-through}
+.chip.mark{border:2px dashed var(--accent);color:var(--accent);font-weight:600}
+.chip.ctl{font-family:var(--mono);border:2px solid var(--disk)}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.chip{animation:none}}
+
+.panel{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.panel h2{margin:0 0 8px;font-size:19px;letter-spacing:-.01em}
+.panel p{margin:0 0 10px}
+.panel ul{margin:0 0 10px;padding-left:20px}
+.panel li{margin-bottom:4px}
+.why{border-top:1px solid var(--line);padding-top:10px;color:var(--muted);font-size:15px}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:16px;flex-wrap:wrap}
+.crash{margin-top:14px}
+.crashout{margin-top:10px;background:var(--crash-bg);color:var(--crash-ink);border-radius:8px;padding:12px 16px;font-size:15px}
+.crashout b{display:block;margin-bottom:2px}
+.hint{color:var(--muted);font-size:13px;margin-top:10px}
+
+@media (max-width:560px){
+  .lane{grid-template-columns:1fr}
+  .lane .lab{padding-bottom:2px}
+  .lane .lab small{display:inline;margin-left:6px}
+}
+</style>
+</head>
+<body>
+<main>
+  <h1>커밋은 했는데 서버가 죽으면? 한 단계씩 눌러보기</h1>
+  <p class="lead">트랜잭션 2에서 바나나를 넣고 커밋한 뒤 비정상 종료되는 상황을 단계별로 쪼갰어요. 뒤쪽 5~7단계는 재시작해서 복구되는 과정입니다. 사과가 커밋되고 체크포인트까지 끝난 상태에서 시작해요.</p>
+
+  <ol class="steps" id="stepList" aria-label="단계 목록"></ol>
+  <p class="phase" id="phase"></p>
+
+  <div class="sql" id="sql"></div>
+
+  <div class="board" id="board"></div>
+
+  <section class="panel" aria-live="polite">
+    <h2 id="title"></h2>
+    <div id="what"></div>
+    <p class="why" id="why"></p>
+    <div class="crash">
+      <button type="button" id="crashBtn"></button>
+      <div class="crashout" id="crashOut" hidden></div>
+    </div>
+    <div class="nav">
+      <button type="button" id="prev">이전</button>
+      <button type="button" class="primary" id="next">다음 단계</button>
+    </div>
+    <div class="hint">색 테두리가 칠해진 영역이 이번 단계에서 바뀐 곳이에요. 점선 위쪽은 메모리, 아래쪽은 디스크입니다. 취소선이 그어진 칸은 사라졌거나 건너뛰는 것이에요.</div>
+  </section>
+</main>
+
+<script>
+(function(){
+  var LANES = [
+    {id:"shared", name:"Shared Buffer", sub:"메모리", kind:"mem"},
+    {id:"walbuf", name:"WAL Buffer", sub:"메모리", kind:"mem"},
+    {id:"walseg", name:"WAL Segment", sub:"디스크", kind:"disk", first:true},
+    {id:"disk",   name:"Database Cluster", sub:"디스크 · 데이터 파일", kind:"disk"},
+    {id:"ctl",    name:"pg_control", sub:"디스크 · 제어 파일", kind:"disk"}
+  ];
+
+  function page(lsn, tuples, dirty, lost){
+    return '<div class="chip page'+(dirty?' dirtyc':'')+(lost?' lost':'')+'"><span>fruit 페이지</span><span>LSN_'+lsn+'</span><span>튜플 '+tuples+'</span>'+(dirty&&!lost?'<em>dirty</em>':'')+(lost?'<em>소실</em>':'')+'</div>';
+  }
+  function rec(t, cls){ return '<div class="chip rec'+(cls?' '+cls:'')+'">'+t+'</div>'; }
+  function mark(t){ return '<div class="chip mark">'+(t||'Redo 포인트 ▸')+'</div>'; }
+  function ctl(t){ return '<div class="chip ctl">'+t+'</div>'; }
+
+  // WAL segment contents carried over from the previous stage
+  var A1 = rec('INSERT 사과 @LSN_1'), A2 = rec('COMMIT'), CPD = rec('CHECKPOINT (완료)');
+  var A  = '"사과"', AB = '"사과", "바나나"';
+  var CTL1 = ctl('Redo 포인트 = LSN_1 이후');
+
+  var STEPS = [
+    {
+      phase:"시작 전",
+      t:"시작 상태: 사과가 커밋되고 체크포인트까지 끝난 상태",
+      sql:"-- 앞 단계의 결과",
+      what:"<p>디스크의 fruit 페이지에는 튜플 사과가 이미 있고(LSN_1), 메모리의 같은 페이지도 디스크와 똑같이 깨끗한 상태입니다.</p><p><code>pg_control</code>은 체크포인트가 끝나서 <b>LSN_1 이후</b>를 Redo 포인트로 가리켜요.</p>",
+      why:"여기서부터 새 트랜잭션 2가 시작됩니다.",
+      hot:[],
+      s:{shared:[page(1,A,false)], walbuf:[], walseg:[A1,A2,mark(),CPD], disk:[page(1,A,false)], ctl:[CTL1]},
+      crash:["아무 문제 없어요.","모든 변경이 디스크에 반영된 상태라 그대로 기동합니다."]
+    },
+    {
+      phase:"트랜잭션 2",
+      t:"① 트랜잭션 2: 페이지에 바나나를 넣는다",
+      sql:"BEGIN;\nINSERT INTO fruit VALUES ('바나나');",
+      what:"<ul><li>fruit 페이지가 <b>이미 Shared Buffer에 있고</b> 여유 공간도 있어서, 디스크에서 다시 읽어 올 필요 없이 바로 \"바나나\"를 추가합니다.</li><li>페이지가 dirty가 되고 LSN이 1에서 2로 바뀝니다.</li><li>INSERT 바나나 레코드가 WAL Buffer에 기록됩니다.</li></ul>",
+      why:"디스크에는 아직 아무것도 안 갔어요. 변경은 전부 메모리에만 있습니다.",
+      hot:["shared","walbuf"],
+      s:{shared:[page(2,AB,true)], walbuf:[rec('INSERT 바나나 @LSN_2','new')], walseg:[A1,A2,mark(),CPD], disk:[page(1,A,false)], ctl:[CTL1]},
+      crash:["바나나가 사라져요. 정상이에요.","커밋 전이고 WAL이 디스크에 없어서 바나나는 없던 일이 됩니다. 디스크는 사과만 있는 깨끗한 상태 그대로예요."]
+    },
+    {
+      phase:"트랜잭션 2",
+      t:"② COMMIT: 커밋 레코드를 만든다",
+      sql:"COMMIT;",
+      what:"<p>잠금을 풀고 <b>커밋 레코드를 WAL Buffer에 추가</b>합니다. 아직 사용자에게 \"커밋 완료\"를 답하기 전이에요.</p>",
+      why:"WAL Buffer 칸에 \"바나나 | commit\"이 나란히 들어 있는 상태입니다.",
+      hot:["walbuf"],
+      s:{shared:[page(2,AB,true)], walbuf:[rec('INSERT 바나나 @LSN_2'), rec('COMMIT','new')], walseg:[A1,A2,mark(),CPD], disk:[page(1,A,false)], ctl:[CTL1]},
+      crash:["바나나가 사라져요. 아직은 정상이에요.","커밋 레코드가 메모리에만 있고 \"커밋 완료\" 응답도 가기 전이라 약속을 어긴 게 아닙니다."]
+    },
+    {
+      phase:"트랜잭션 2",
+      t:"③ WAL 파일로 flush되고, 커밋 완료",
+      sql:"COMMIT;   -- WAL flush 후 \"COMMIT\" 응답",
+      what:"<p>WAL Buffer의 <b>INSERT 바나나 레코드와 COMMIT이 WAL Segment 파일에 기록</b>되고, 그제야 사용자에게 \"커밋 완료\"를 응답합니다.</p><p>그런데 <b>데이터 파일의 페이지는 여전히 LSN_1, 튜플 사과만 있어요.</b> 바나나가 들어간 dirty 페이지는 메모리에만 있습니다.</p>",
+      why:"WAL Buffer에서 WAL Segment로 내려가는 게 이 단계예요. 이 시점부터 바나나는 \"커밋된 데이터\"이고 절대 잃으면 안 됩니다. Background Writer가 dirty 페이지를 아직 내려 주지 않았고, 다음 체크포인트도 오지 않은 상태예요.",
+      hot:["walbuf","walseg"],
+      s:{shared:[page(2,AB,true)], walbuf:[], walseg:[A1,A2,mark(),CPD,rec('INSERT 바나나 @LSN_2','new'),rec('COMMIT','new')], disk:[page(1,A,false)], ctl:[CTL1]},
+      crash:["바나나는 안전해요. 복구 때 되살아납니다.","데이터 파일에 바나나는 없지만 WAL에 INSERT 바나나 레코드와 COMMIT이 있어요. 바로 다음 단계들이 이 상황이에요."]
+    },
+    {
+      phase:"트랜잭션 2",
+      t:"④ 데이터베이스 비정상 종료 (DB Crash)",
+      sql:"-- 서버 프로세스 강제 종료 / 전원 차단 등",
+      what:"<p>서버가 갑자기 죽으면서 <b>메모리 영역이 전부 사라집니다.</b> Shared Buffer의 바나나가 들어 있던 페이지도 함께 날아가요.</p><p>하지만 디스크에 있는 것들은 그대로입니다.</p><ul><li>WAL Segment: INSERT 바나나, COMMIT 있음</li><li>데이터 파일: 튜플 사과까지만 있음</li><li><code>pg_control</code>: Redo 포인트 LSN_1 이후</li></ul>",
+      why:"디스크의 데이터 파일은 \"바나나가 없는 옛날 상태\"고, WAL은 \"바나나가 커밋됐다\"고 말하고 있어요. 이 불일치를 복구가 메꿉니다.",
+      hot:["shared","walbuf"],
+      crashed:true,
+      s:{shared:[page(2,AB,true,true)], walbuf:[], walseg:[A1,A2,mark(),CPD,rec('INSERT 바나나 @LSN_2'),rec('COMMIT')], disk:[page(1,A,false)], ctl:[CTL1]},
+      crash:["이미 죽은 상태예요.","여기서 다시 한번 죽어도(복구 도중 포함) 디스크의 WAL과 pg_control은 그대로라서 결과는 같습니다."]
+    },
+    {
+      phase:"복구",
+      t:"⑤ 재시작: pg_control로 복구 시작점을 찾는다",
+      sql:"-- pg_ctl start  (서버 재기동)",
+      what:"<p>서버가 다시 뜨면서 <code>pg_control</code>을 읽어요. 거기에는 <b>마지막으로 완전히 끝난 체크포인트의 Redo 포인트(LSN_1 이후)</b>가 적혀 있습니다.</p><p>이 위치부터 WAL을 읽기 시작합니다.</p>",
+      why:"그 앞의 INSERT 사과, COMMIT은 체크포인트 때 이미 데이터 파일에 반영됐다고 보장돼 있어서 읽지 않아도 돼요. 이게 Redo 포인트가 복구 시간을 줄여 주는 방식입니다.",
+      hot:["ctl","walseg"],
+      s:{shared:[], walbuf:[], walseg:[rec('INSERT 사과 @LSN_1','skip'),rec('COMMIT','skip'),mark('재생 시작 ▸'),CPD,rec('INSERT 바나나 @LSN_2'),rec('COMMIT')], disk:[page(1,A,false)], ctl:[ctl('Redo 포인트 = LSN_1 이후 → 여기부터 읽음')]},
+      crash:["다시 처음부터 복구하면 돼요.","복구는 몇 번을 반복해도 같은 결과가 나옵니다."]
+    },
+    {
+      phase:"복구",
+      t:"⑥ WAL을 순서대로 다시 적용(Redo)한다",
+      sql:"-- 복구 중: INSERT 바나나 레코드 재생",
+      what:"<ul><li>INSERT 바나나 레코드를 읽고, 해당 페이지를 디스크에서 Shared Buffer로 올립니다(LSN_1, 튜플 사과).</li><li>페이지 LSN(1)이 레코드 LSN(2)보다 작아서 <b>아직 적용 안 된 변경</b>으로 판단하고 바나나를 넣습니다. 페이지 LSN은 2가 돼요.</li><li>COMMIT 레코드가 있으므로 이 트랜잭션은 \"커밋됨\"으로 확정됩니다.</li></ul>",
+      why:"페이지 LSN과 레코드 LSN을 비교해서 \"이미 반영됐는지\"를 판단하기 때문에 같은 WAL을 여러 번 재생해도 안전해요.",
+      hot:["shared","walseg"],
+      s:{shared:[page(2,AB,true)], walbuf:[], walseg:[rec('INSERT 사과 @LSN_1','skip'),rec('COMMIT','skip'),mark('재생 시작 ▸'),CPD,rec('INSERT 바나나 @LSN_2','new'),rec('COMMIT','new')], disk:[page(1,A,false)], ctl:[ctl('Redo 포인트 = LSN_1 이후')]},
+      crash:["다시 재기동해서 처음부터 복구해요.","메모리 상태는 사라지지만 디스크의 WAL은 그대로라서 같은 재생을 다시 하면 됩니다."]
+    },
+    {
+      phase:"복구",
+      t:"⑦ 복구 완료: 바나나가 돌아왔다",
+      sql:"SELECT * FROM fruit;   -- 사과, 바나나 모두 조회됨",
+      what:"<p>재생이 끝나면 데이터가 정리되고 서비스가 재개됩니다. 복구 끝에 체크포인트를 한 번 수행해서 복구된 페이지를 데이터 파일에 내리고 <code>pg_control</code>의 Redo 포인트도 앞으로 옮겨요.</p><p>이제 디스크의 fruit 페이지에 <b>사과와 바나나가 모두</b> 있습니다.</p>",
+      why:"커밋 응답을 받았던 바나나가 서버가 죽었다 살아난 뒤에도 그대로 남았어요. \"WAL만 디스크에 안전하게 있으면 데이터 페이지는 잃어도 복구된다\"가 확인되는 지점입니다.",
+      hot:["shared","disk","ctl","walseg"],
+      s:{shared:[page(2,AB,false)], walbuf:[], walseg:[rec('INSERT 사과 @LSN_1','skip'),rec('COMMIT','skip'),mark(),CPD,rec('INSERT 바나나 @LSN_2'),rec('COMMIT'),rec('CHECKPOINT (복구 후)','new')], disk:[page(2,AB,false)], ctl:[ctl('Redo 포인트 = LSN_2 이후 (갱신됨)')]},
+      crash:["이제 바나나는 데이터 파일에도 있어요.","평소처럼 정상 기동합니다."]
+    }
+  ];
+
+  var cur = 0;
+  var $ = function(id){return document.getElementById(id)};
+  var board = $("board"), list = $("stepList");
+
+  LANES.forEach(function(l){
+    var d = document.createElement("div");
+    d.className = "lane " + l.kind + (l.first ? " firstdisk" : "");
+    d.id = "lane-" + l.id;
+    d.innerHTML = '<div class="lab">'+l.name+'<small>'+l.sub+'</small></div><div class="body"></div>';
+    board.appendChild(d);
+  });
+
+  STEPS.forEach(function(s,i){
+    if(i === 4 || i === 1){
+      var gap = document.createElement("li");
+      gap.className = "gap";
+      gap.setAttribute("aria-hidden","true");
+      list.appendChild(gap);
+    }
+    var li = document.createElement("li");
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = i;
+    b.setAttribute("aria-label", i + "단계: " + s.t);
+    b.onclick = function(){go(i)};
+    li.appendChild(b);
+    list.appendChild(li);
+  });
+
+  function crashLabel(){
+    return STEPS[cur].crashed ? "여기서 또 죽으면?" : "이 시점에 서버가 죽으면?";
+  }
+
+  function go(n){
+    cur = Math.max(0, Math.min(STEPS.length-1, n));
+    var s = STEPS[cur];
+    $("phase").textContent = s.phase;
+    $("sql").textContent = s.sql;
+    $("title").textContent = s.t;
+    $("what").innerHTML = s.what;
+    $("why").textContent = s.why;
+    $("crashOut").hidden = true;
+    $("crashBtn").textContent = crashLabel();
+    board.classList.toggle("crashed", !!s.crashed);
+    LANES.forEach(function(l){
+      var el = $("lane-" + l.id);
+      var items = s.s[l.id];
+      el.querySelector(".body").innerHTML = items.length ? items.join("") : '<span class="empty">(비어 있음)</span>';
+      el.classList.toggle("hot", s.hot.indexOf(l.id) >= 0);
+    });
+    Array.prototype.forEach.call(list.querySelectorAll("button"), function(b,i){
+      if(i === cur) b.setAttribute("aria-current","step"); else b.removeAttribute("aria-current");
+      b.classList.toggle("done", i < cur);
+    });
+    $("prev").disabled = cur === 0;
+    $("next").disabled = cur === STEPS.length-1;
+    $("next").textContent = cur === STEPS.length-1 ? "끝" : "다음 단계";
+  }
+
+  $("prev").onclick = function(){go(cur-1)};
+  $("next").onclick = function(){go(cur+1)};
+  $("crashBtn").onclick = function(){
+    var o = $("crashOut"), s = STEPS[cur];
+    if(o.hidden){
+      o.innerHTML = "<b>"+s.crash[0]+"</b>"+s.crash[1];
+      o.hidden = false;
+      $("crashBtn").textContent = "닫기";
+    } else {
+      o.hidden = true;
+      $("crashBtn").textContent = crashLabel();
+    }
+  };
+  document.addEventListener("keydown", function(e){
+    if(e.key === "ArrowRight") go(cur+1);
+    else if(e.key === "ArrowLeft") go(cur-1);
+  });
+  go(0);
+})();
+</script>
+</body>
+</html>
