@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 import os
+import sys
 import datetime
 import re
 
 POSTS_DIR = "_posts"
+DRAFTS_DIR = "_drafts"
+
 CATEGORIES = [
     "Java", "Spring", "Spring Batch", "Database", "Kafka", 
     "Kubernetes", "Design Pattern", "Git", "DevOps", "Node.js", 
@@ -46,7 +49,6 @@ KOREAN_TECH_DICT = {
 
 def clean_title(raw_title):
     """제목의 줄바꿈, 제어 문자 및 불필요한 연속 공백을 정돈합니다."""
-    # 줄바꿈 및 제어 문자 제거
     title = re.sub(r"[\r\n\t]", " ", raw_title)
     title = title.strip()
     title = re.sub(r"\s+", " ", title)
@@ -107,9 +109,12 @@ def generate_smart_slug(title, category=""):
         
     return slug
 
-def create_new_post():
+def create_new_post(is_draft=False):
+    doc_type = "임시 글(Draft)" if is_draft else "새 포스트"
+    target_dir = DRAFTS_DIR if is_draft else POSTS_DIR
+    
     print("=========================================")
-    print("📝 새로운 블로그 포스트 생성 도구 (스마트 슬러그)")
+    print(f"📝 {doc_type} 생성 도구")
     print("=========================================\n")
     
     # 1. 제목 입력
@@ -142,7 +147,7 @@ def create_new_post():
     if not slug_input:
         slug = recommended_slug
     else:
-        # 사용자가 직접 입력한 슬러그도 깔끔한 kebab-case로 정돈
+        # 사용자가 직접 입력한 슬러그도 정돈
         slug = re.sub(r"[^\w\-]", "", slug_input.lower().replace(" ", "-"))
         slug = re.sub(r"\-+", "-", slug).strip("-")
         
@@ -151,7 +156,7 @@ def create_new_post():
     date_str = now.strftime("%Y-%m-%d")
     datetime_str = now.strftime("%Y-%m-%d %H:%M:%S +0900")
     
-    # 보안: slug에서 영문/숫자/하이픈 외 모든 문자 제거 (Path Traversal 및 파일명 위조 원천 방지)
+    # 보안: slug에서 영문/숫자/하이픈 외 모든 문자 제거
     slug = re.sub(r"[^a-zA-Z0-9\-]", "", slug).strip("-")
     if not slug:
         slug = f"post-{int(now.timestamp())}"
@@ -159,8 +164,13 @@ def create_new_post():
     # 보안: YAML Front Matter 파싱 깨짐 방지를 위한 큰따옴표 이스케이프
     escaped_title = title.replace("\\", "\\\\").replace('"', '\\"')
 
-    filename = f"{date_str}-{slug}.md"
-    filepath = os.path.join(POSTS_DIR, filename)
+    # 임시 글(Draft)은 Jekyll 표준상 날짜 접두사 없이 slug.md로 생성됨
+    if is_draft:
+        filename = f"{slug}.md"
+    else:
+        filename = f"{date_str}-{slug}.md"
+        
+    filepath = os.path.join(target_dir, filename)
     
     # 파일 중복 검사
     if os.path.exists(filepath):
@@ -168,13 +178,14 @@ def create_new_post():
         return
         
     # Front Matter 및 기본 본문 템플릿 구성
+    published_field = "published: false\n" if is_draft else ""
     template = f"""---
 layout: default
 title: "{escaped_title}"
 date: {datetime_str}
 categories: [{category}]
 slug: {slug}
----
+{published_field}---
 {{% raw %}}
 
 ## 1. 개요
@@ -184,17 +195,89 @@ slug: {slug}
 {{% endraw %}}
 """
     
-    os.makedirs(POSTS_DIR, exist_ok=True)
+    os.makedirs(target_dir, exist_ok=True)
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(template)
         
     print("\n=========================================")
-    print("🎉 새 포스트 생성이 완료되었습니다!")
+    print(f"🎉 {doc_type} 작성이 완료되었습니다!")
     print(f"📌 제목: {title}")
     print(f"📂 파일 경로: {filepath}")
     print(f"🔗 슬러그: {slug}")
     print("=========================================")
     print(f"👉 바로 편집하시려면 다음 링크를 클릭하세요: file://{os.path.abspath(filepath)}")
 
+def publish_draft():
+    """_drafts 폴더의 임시 글을 오늘 날짜로 _posts에 정식 발행합니다."""
+    print("=========================================")
+    print("🚀 임시 글(Draft) → 정식 포스트(_posts) 발행")
+    print("=========================================\n")
+    
+    if not os.path.exists(DRAFTS_DIR):
+        print("ℹ️ _drafts 폴더가 존재하지 않습니다.")
+        return
+        
+    draft_files = [f for f in os.listdir(DRAFTS_DIR) if f.endswith(".md")]
+    if not draft_files:
+        print("ℹ️ 발행할 임시 글이 없습니다.")
+        return
+        
+    print("📋 [임시 글 목록]")
+    for idx, df in enumerate(draft_files, 1):
+        print(f"  [{idx}] {df}")
+    print("  [0] 취소")
+    
+    try:
+        choice = int(input("\n👉 발행할 글 번호를 선택하세요: ") or 0)
+    except ValueError:
+        choice = 0
+        
+    if choice <= 0 or choice > len(draft_files):
+        print("취소되었습니다.")
+        return
+        
+    target_draft = draft_files[choice - 1]
+    draft_path = os.path.join(DRAFTS_DIR, target_draft)
+    
+    # 오늘 날짜
+    now = datetime.datetime.now()
+    today_str = now.strftime("%Y-%m-%d")
+    now_str = now.strftime("%Y-%m-%d %H:%M:%S +0900")
+    
+    # 대상 파일명 (YYYY-MM-DD-filename)
+    post_filename = f"{today_str}-{target_draft}"
+    post_path = os.path.join(POSTS_DIR, post_filename)
+    
+    if os.path.exists(post_path):
+        print(f"❌ _posts에 이미 동일한 파일이 존재합니다: {post_path}")
+        return
+        
+    # 내용 읽어서 date 갱신 및 published: false 제거
+    with open(draft_path, "r", encoding="utf-8") as f:
+        content = f.read()
+        
+    content = re.sub(r"^date:\s*.*$", f"date: {now_str}", content, flags=re.MULTILINE)
+    content = re.sub(r"^published:\s*false\n?", "", content, flags=re.MULTILINE)
+    
+    os.makedirs(POSTS_DIR, exist_ok=True)
+    with open(post_path, "w", encoding="utf-8") as f:
+        f.write(content)
+        
+    os.remove(draft_path)
+    
+    print("\n=========================================")
+    print("🎉 정식 포스트로 발행 완료!")
+    print(f"📂 발행된 파일: {post_path}")
+    print("=========================================")
+
 if __name__ == "__main__":
-    create_new_post()
+    if len(sys.argv) > 1:
+        arg = sys.argv[1].lower()
+        if arg in ["--draft", "-d", "draft"]:
+            create_new_post(is_draft=True)
+        elif arg in ["--publish", "-p", "publish"]:
+            publish_draft()
+        else:
+            create_new_post(is_draft=False)
+    else:
+        create_new_post(is_draft=False)

@@ -18,11 +18,13 @@ show_menu() {
     echo -e "${CYAN}${BOLD}========================================${NC}"
     echo -e "${BOLD}현재 위치:${NC} $SCRIPT_DIR"
     echo ""
-    echo -e "  ${GREEN}[1]${NC} 📝 새 포스트 작성 (new_post.py)"
-    echo -e "  ${GREEN}[2]${NC} 🚀 스마트 커밋 & 푸시 (auto_commit.py)"
-    echo -e "  ${GREEN}[3]${NC} 🔍 Git 상태 확인 (git status)"
-    echo -e "  ${GREEN}[4]${NC} 🌐 로컬 웹 서버 실행 (테스트용)"
-    echo -e "  ${YELLOW}[5]${NC} 💻 직접 명령어 입력 (메뉴 닫기)"
+    echo -e "  ${GREEN}[1]${NC} 📝 새 포스트 작성 (_posts)"
+    echo -e "  ${GREEN}[2]${NC} 🤫 임시 글 작성 (_drafts)"
+    echo -e "  ${GREEN}[3]${NC} 🚀 임시 글 정식 발행 (draft -> post)"
+    echo -e "  ${GREEN}[4]${NC} 📦 스마트 커밋 & 푸시 (auto_commit.py)"
+    echo -e "  ${GREEN}[5]${NC} 🔍 Git 상태 확인 (git status)"
+    echo -e "  ${GREEN}[6]${NC} 🌐 로컬 웹 서버 실행 (테스트용)"
+    echo -e "  ${YELLOW}[7]${NC} 💻 직접 명령어 입력 (메뉴 닫기)"
     echo ""
     echo -e "${CYAN}----------------------------------------${NC}"
 }
@@ -38,7 +40,7 @@ start_local_server() {
 # 메인 루프
 while true; do
     show_menu
-    read -rp "원하는 작업 번호를 선택하세요 (1-5, 종료는 q 또는 5): " choice
+    read -rp "원하는 작업 번호를 선택하세요 (1-7, 종료는 q 또는 7): " choice
     case "$choice" in
         1)
             echo ""
@@ -48,26 +50,38 @@ while true; do
             ;;
         2)
             echo ""
-            python3 auto_commit.py
+            python3 new_post.py --draft
             echo ""
             read -rp "계속하려면 Enter를 누르세요..." _
             ;;
         3)
             echo ""
-            git status
+            python3 new_post.py --publish
             echo ""
             read -rp "계속하려면 Enter를 누르세요..." _
             ;;
         4)
+            echo ""
+            python3 auto_commit.py
+            echo ""
+            read -rp "계속하려면 Enter를 누르세요..." _
+            ;;
+        5)
+            echo ""
+            git status
+            echo ""
+            read -rp "계속하려면 Enter를 누르세요..." _
+            ;;
+        6)
             start_local_server
             read -rp "계속하려면 Enter를 누르세요..." _
             ;;
-        5|q|Q|exit)
+        7|q|Q|exit)
             echo -e "${GREEN}터미널로 돌아갑니다. 명령어를 직접 입력하세요.${NC}"
             exit 0
             ;;
         *)
-            # 1~4 외의 다른 키나 엔터 입력 시 바로 터미널로 나감
+            # 1~6 외의 다른 키나 엔터 입력 시 바로 터미널로 나감
             echo -e "${GREEN}메뉴를 종료하고 셸로 전환합니다.${NC}"
             exit 0
             ;;
