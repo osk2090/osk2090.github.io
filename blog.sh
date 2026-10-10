@@ -31,7 +31,8 @@ start_local_server() {
     echo ""
     echo -e "${CYAN}${BOLD}[로컬 웹 서버 실행]${NC}"
     echo -e "${GREEN}http://localhost:8000 에서 확인하실 수 있습니다. (종료: Ctrl+C)${NC}"
-    python3 -m http.server 8000
+    echo -e "${YELLOW}🔒 보안: 127.0.0.1(로컬호스트)에만 바인딩되어 외부 네트워크 접근이 차단됩니다.${NC}"
+    python3 -m http.server 8000 --bind 127.0.0.1
 }
 
 # 메인 루프

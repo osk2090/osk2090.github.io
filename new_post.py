@@ -45,8 +45,10 @@ KOREAN_TECH_DICT = {
 }
 
 def clean_title(raw_title):
-    """제목의 불필요한 연속 공백이나 앞뒤 공백을 정돈합니다."""
-    title = raw_title.strip()
+    """제목의 줄바꿈, 제어 문자 및 불필요한 연속 공백을 정돈합니다."""
+    # 줄바꿈 및 제어 문자 제거
+    title = re.sub(r"[\r\n\t]", " ", raw_title)
+    title = title.strip()
     title = re.sub(r"\s+", " ", title)
     return title
 
@@ -149,6 +151,14 @@ def create_new_post():
     date_str = now.strftime("%Y-%m-%d")
     datetime_str = now.strftime("%Y-%m-%d %H:%M:%S +0900")
     
+    # 보안: slug에서 영문/숫자/하이픈 외 모든 문자 제거 (Path Traversal 및 파일명 위조 원천 방지)
+    slug = re.sub(r"[^a-zA-Z0-9\-]", "", slug).strip("-")
+    if not slug:
+        slug = f"post-{int(now.timestamp())}"
+
+    # 보안: YAML Front Matter 파싱 깨짐 방지를 위한 큰따옴표 이스케이프
+    escaped_title = title.replace("\\", "\\\\").replace('"', '\\"')
+
     filename = f"{date_str}-{slug}.md"
     filepath = os.path.join(POSTS_DIR, filename)
     
@@ -160,7 +170,7 @@ def create_new_post():
     # Front Matter 및 기본 본문 템플릿 구성
     template = f"""---
 layout: default
-title: "{title}"
+title: "{escaped_title}"
 date: {datetime_str}
 categories: [{category}]
 slug: {slug}
