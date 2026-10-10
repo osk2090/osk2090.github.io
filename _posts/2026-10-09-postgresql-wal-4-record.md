@@ -48,13 +48,15 @@ CRUD가 발생하면 먼저 WAL 버퍼에 기록된다. 변경된 내용은 즉�
 
 <iframe src="/assets/html/insert-commit-checkpoint-simulation.html?v=3" width="100%" height="820px" style="border: 1px solid #cfd9de; border-radius: 12px; margin: 20px 0; background: #fff;" loading="lazy"></iframe>
 
+> 🔗 화면이 작거나 잘 보이지 않는다면 [새 탭에서 전체 화면으로 보기](https://blog.nebulix.io/assets/html/insert-commit-checkpoint-simulation.html?v=3){:target="_blank"}를 클릭.
+
 ---
 
-### 💡 INSERT → COMMIT → 체크포인트 단계별 시뮬레이션
+### 💡 커밋 직후 서버가 죽으면? 단계별 시뮬레이션
 
 <iframe src="/assets/html/crash-recovery-simulation.html?v=1" width="100%" height="820px" style="border: 1px solid #cfd9de; border-radius: 12px; margin: 20px 0; background: #fff;" loading="lazy"></iframe>
 
-> 🔗 화면이 작거나 잘 보이지 않는다면 [새 탭에서 전체 화면으로 보기](/assets/html/insert-commit-checkpoint-simulation.html?v=3){:target="_blank"}를 클릭.
+> 🔗 화면이 작거나 잘 보이지 않는다면 [새 탭에서 전체 화면으로 보기](https://blog.nebulix.io/assets/html/crash-recovery-simulation.html?v=1){:target="_blank"}를 클릭.
 
 {% endraw %}
 
